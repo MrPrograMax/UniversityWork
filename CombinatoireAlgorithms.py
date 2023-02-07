@@ -6,16 +6,18 @@ import pandas as pd
 
 # Alg 2.1
 
-def GenerationOfNbitBinaryVectors(n):
+def GenerationOfNbitBinaryVectors(n, flagOnPrint = False):
     B = np.zeros(n)
     countOperation = 0
     while True:
         if IsContainsOnlyUnit(B):
-            # print(f"B contains only unit: B = {B}")
+            if flagOnPrint:
+                print(f"B contains only unit: B = {B}")
             break
         else:
             countOperation += 1
-            # print(f"{countOperation}) Current B: {B}")
+            if flagOnPrint:
+                print(f"{countOperation}) Current B: {B}")
             m = -1
             for i in range(len(B)):
                 if B[i] == 0:
