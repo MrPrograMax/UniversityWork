@@ -4,7 +4,7 @@
   "metadata": {
     "colab": {
       "provenance": [],
-      "authorship_tag": "ABX9TyMDM62Wm9rzUbSd1of5RowK"
+      "authorship_tag": "ABX9TyOtp+LdG9pFRbL5RholN8eS"
     },
     "kernelspec": {
       "name": "python3",
@@ -23,7 +23,9 @@
       },
       "outputs": [],
       "source": [
-        "print(\"бимба\")"
+        "print(\"бимба\")\n",
+        "\n",
+        "print(\"мегабимба\")"
       ]
     }
   ]
