@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 # region Maxim G.
@@ -7,12 +8,14 @@ import numpy as np
 
 def GenerationOfNbitBinaryVectors(n):
     B = np.zeros(n)
+    countOperation = 0
     while True:
         if IsContainsOnlyUnit(B):
-            print(f"B contains only unit: B = {B}")
+            # print(f"B contains only unit: B = {B}")
             break
         else:
-            print(f"Current B: {B}")
+            countOperation += 1
+            # print(f"{countOperation}) Current B: {B}")
             m = -1
             for i in range(len(B)):
                 if B[i] == 0:
@@ -21,9 +24,10 @@ def GenerationOfNbitBinaryVectors(n):
             for j in range(m + 1, n):
                 B[j] = 0
 
+    return countOperation
+
 
 def IsContainsOnlyUnit(arr):
-    result = True
     for i in arr:
         if i != 1:
             return False
@@ -31,7 +35,24 @@ def IsContainsOnlyUnit(arr):
     return True
 
 
+# Test count of operation:
+def Test(end):
+    end += 1
+    operations = []
+    n = range(1, end)
+    for i in range(1, end):
+        operations.append(GenerationOfNbitBinaryVectors(i))
 
+    data = pd.DataFrame(
+        {
+            'n': n,
+            'operations': operations
+        }
+    )
+    print(data)
+
+
+Test(20)
 # endregion
 
 
