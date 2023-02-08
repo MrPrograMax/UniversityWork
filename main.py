@@ -15,4 +15,4 @@ from Tests.TestMilitaryBases import *
 
 # region BasedTest
 print("Hello GutHub!")
-#end region
+# endregion
