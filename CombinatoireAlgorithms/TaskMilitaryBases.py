@@ -4,6 +4,10 @@ import itertools as iter
 
 def GetInfoAboutBastMilitaryBase(numberOfAreas, neighborhoodMatrix, losses):
     # asymptotic = Θ(n^3 * n!)
+
+    if IsValid(numberOfAreas, neighborhoodMatrix, losses) == False:
+        return 0
+
     minSum = sys.maxsize * 2 + 1  # int max value
     indexBase = []
     keys = range(numberOfAreas)
@@ -38,3 +42,27 @@ def GetSumOfVectors(arrays, keys):
         result += arrays[i]
 
     return result
+
+def IsValid(n, A, c):
+    """ n is numberOfAreas 
+        A is neighborhoodMatrix 
+        c is losses
+        ошибка 105 не работает, из-за того что на этапе создания нампай не дает создать не квадратную матрицу
+    """
+    if n <= 0:
+        print(">> Ошибка! Код: 101: Размерность нулевая или отрицательная")
+        return False
+    
+    if type(n) != int:
+        print(">> Ошибка! Код: 102: Размерность не является целочисленной")
+        return False
+    
+    if n != len(A):
+        print(">> Ошибка! Код: 103: Размерность на входе не соответсвует колличеству векторов в матрице!")
+        return False
+    
+    if n != len(c):
+        print(">> Ошибка! Код: 104: Размерность на входе не соответсвует колличеству элементов в векторе потерь!")
+        return False
+        
+    return True
