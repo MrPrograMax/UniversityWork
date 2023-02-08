@@ -2,6 +2,8 @@ import numpy as np
 from CombinatoireAlgorithms.TaskMilitaryBases import GetInfoAboutBastMilitaryBase
 
 #region ValidTests
+print("ТЕСТИРОВАНИЕ АЛГОРИТМА:\n")
+
 print("Cлучай для примера из пособия, когда все ci равны 1")
 size = 9
 A = np.array([
@@ -36,7 +38,9 @@ GetInfoAboutBastMilitaryBase(size, A, losses)
 # endregion
 
 #region InvalidTests
-print("\nCлучай для примера из пособия, когда n <= 0")
+print("\nТЕСТИРОВАНИЕ РАБОТОСПОСОБНОСТИ:")
+
+print("\nCлучай, когда n <= 0")
 size = 0
 A = np.array([
     [1, 1, 0, 1, 0, 0, 0, 0, 0],
@@ -52,7 +56,7 @@ A = np.array([
 losses = [1, 1, 1, 1, 1, 1, 1, 1, 1]
 GetInfoAboutBastMilitaryBase(size, A, losses)
 
-print("\nCлучай для примера из пособия, когда n не совпадает с колличеством векторов матрицы A")
+print("\nCлучай, когда n не совпадает с колличеством векторов матрицы A")
 size = 3
 A = np.array([
     [1, 1, 0, 1, 0, 0, 0, 0, 0],
@@ -68,7 +72,7 @@ A = np.array([
 losses = [1, 1, 1, 1, 1, 1, 1, 1, 1]
 GetInfoAboutBastMilitaryBase(size, A, losses)
 
-print("\nCлучай для примера из пособия, когда n не совпадает с размерностью одного из векторов матрицы A")
+print("\nCлучай, когда n не совпадает с размерностью какого-либо вектора матрицы A")
 error = False
 size = 9
 try:
@@ -90,7 +94,7 @@ if not error:
     losses = [1, 1, 1, 1, 1, 1, 1, 1, 1]
     GetInfoAboutBastMilitaryBase(size, A, losses)
 
-print("\nCлучай для примера из пособия, когда размерность ci не совпадает с размерность n")
+print("\nCлучай, когда размерность ci не совпадает с размерностью n")
 size = 9
 A = np.array([
     [1, 1, 0, 1, 0, 0, 0, 0, 0],
@@ -106,7 +110,7 @@ A = np.array([
 losses = [1, 1, 1, 1, 1, 1, 1] #размерность 7
 GetInfoAboutBastMilitaryBase(size, A, losses)
 
-print("\nCлучай для примера из пособия, когда размерность n не целое")
+print("\nCлучай, когда размерность n не целое")
 size = 2.5
 A = np.array([
     [1, 1, 0, 1, 0, 0, 0, 0, 0],

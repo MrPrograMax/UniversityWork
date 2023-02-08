@@ -48,12 +48,12 @@ def IsValid(n, A, c):
         A is neighborhoodMatrix 
         c is losses
     """
-    if n <= 0:
-        print(">> Ошибка! Код: 101: Размерность нулевая или отрицательная")
+    if not isinstance(n, int):
+        print(">> Ошибка! Код: 101: Размерность не является целочисленной")
         return False
-    
-    if type(n) != int:
-        print(">> Ошибка! Код: 102: Размерность не является целочисленной")
+
+    if n <= 0:
+        print(">> Ошибка! Код: 102: Размерность нулевая или отрицательная")
         return False
     
     if n != len(A):
