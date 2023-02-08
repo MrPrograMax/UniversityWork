@@ -21,7 +21,7 @@ def GetInfoAboutBastMilitaryBase(numberOfAreas, neighborhoodMatrix, losses):
                     minSum = sum
                     indexBase = curKeys
 
-    print(f"Минимальная сумма: {minSum}\nРасположение баз: {indexBase}\nМинимальное кол-во баз: {len(indexBase)}")
+    print(f"Минимальная сумма: {minSum}\nРасположение баз: {indexBase}\nСоответствующее кол-во баз: {len(indexBase)}")
 
 
 def IsNoneZero(arr):
