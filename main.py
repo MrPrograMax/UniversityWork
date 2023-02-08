@@ -7,11 +7,8 @@ from Tests.TestAlgorithm21 import *
 from Tests.TestMilitaryBases import *
 
 # region Algorithm
-
-
 # endregion
 
 
 # region Test
-
 # endregion
