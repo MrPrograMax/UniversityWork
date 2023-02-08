@@ -1,9 +1,11 @@
 import sys
 import itertools as iter
-
+from time import perf_counter
 
 def GetInfoAboutBastMilitaryBase(numberOfAreas, neighborhoodMatrix, losses):
     # asymptotic = Θ(n^3 * n!)
+
+    time_start = perf_counter() #timer
 
     if IsValid(numberOfAreas, neighborhoodMatrix, losses) == False:
         return 0
@@ -25,7 +27,8 @@ def GetInfoAboutBastMilitaryBase(numberOfAreas, neighborhoodMatrix, losses):
                     minSum = sum
                     indexBase = curKeys
 
-    print(f"Минимальная сумма: {minSum}\nРасположение баз: {indexBase}\nСоответствующее кол-во баз: {len(indexBase)}")
+    time_end = perf_counter() 
+    print(f"Минимальная сумма: {minSum}\nРасположение баз: {indexBase}\nСоответствующее кол-во баз: {len(indexBase)}\nВремя работы: {time_end-time_start}")
 
 
 def IsNoneZero(arr):
