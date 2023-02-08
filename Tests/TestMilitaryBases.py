@@ -1,6 +1,9 @@
 import numpy as np
 from CombinatoireAlgorithms.TaskMilitaryBases import GetInfoAboutBastMilitaryBase
 
+#region ValidTests
+print("Cлучай для примера из пособия, когда все ci равны 1")
+size = 9
 A = np.array([
     [1, 1, 0, 1, 0, 0, 0, 0, 0],
     [1, 1, 1, 0, 1, 0, 0, 0, 0],
@@ -12,6 +15,43 @@ A = np.array([
     [0, 0, 0, 0, 1, 0, 1, 1, 1],
     [0, 0, 0, 0, 0, 1, 0, 1, 1]
 ])
+losses = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+GetInfoAboutBastMilitaryBase(size, A, losses)
+
+print("\nСлучай для примера из пособия, когда 5 баз выгоднее чем 3")
+size = 9
+A = np.array([
+    [1, 1, 0, 1, 0, 0, 0, 0, 0],
+    [1, 1, 1, 0, 1, 0, 0, 0, 0],
+    [0, 1, 1, 0, 0, 1, 0, 0, 0],
+    [1, 0, 0, 1, 1, 0, 1, 0, 0],
+    [0, 1, 0, 1, 1, 1, 0, 1, 0],
+    [0, 0, 1, 0, 1, 1, 0, 0, 1],
+    [0, 0, 0, 1, 0, 0, 1, 1, 0],
+    [0, 0, 0, 0, 1, 0, 1, 1, 1],
+    [0, 0, 0, 0, 0, 1, 0, 1, 1]
+])
+losses = [0.1, 1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1]
+GetInfoAboutBastMilitaryBase(size, A, losses)
+# endregion
+
+#region InvalidTests
+print("\nCлучай для примера из пособия, когда n <=0")
+size = 0
+A = np.array([
+    [1, 1, 0, 1, 0, 0, 0, 0, 0],
+    [1, 1, 1, 0, 1, 0, 0, 0, 0],
+    [0, 1, 1, 0, 0, 1, 0, 0, 0],
+    [1, 0, 0, 1, 1, 0, 1, 0, 0],
+    [0, 1, 0, 1, 1, 1, 0, 1, 0],
+    [0, 0, 1, 0, 1, 1, 0, 0, 1],
+    [0, 0, 0, 1, 0, 0, 1, 1, 0],
+    [0, 0, 0, 0, 1, 0, 1, 1, 1],
+    [0, 0, 0, 0, 0, 1, 0, 1, 1]
+])
+losses = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+GetInfoAboutBastMilitaryBase(size, A, losses)
+#endregion
 
 AT = np.array([
     [1, 1, 0, 0, 0, 0, 0, 0, 0],
@@ -24,6 +64,3 @@ AT = np.array([
     [0, 0, 0, 0, 0, 0, 1, 1, 1],
     [0, 0, 0, 0, 0, 0, 0, 1, 1]
 ])
-
-losses = [0.1, 1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1]
-GetInfoAboutBastMilitaryBase(9, A, losses)
