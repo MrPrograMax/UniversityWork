@@ -46,6 +46,7 @@ def GetSumOfVectors(arrays, keys):
 
     return result
 
+
 def IsValid(n, A, c):
     """ n is numberOfAreas 
         A is neighborhoodMatrix 

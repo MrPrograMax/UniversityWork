@@ -2,10 +2,12 @@ import numpy as np
 
 
 def GenerationOfKElementSubsetsNElementSet(n, k):
+    result = []
     A = np.array(range(0, k + 1))
     p = k
     while True:
         PrintCurrentValue(A, p)
+        result.append([A])
         if A[k] == n:
             p = p - 1
         else:
@@ -17,6 +19,8 @@ def GenerationOfKElementSubsetsNElementSet(n, k):
         else:
             break
 
+    return result
+
 
 def PrintCurrentValue(A, p):
     A = np.delete(A, 0)
@@ -24,7 +28,7 @@ def PrintCurrentValue(A, p):
 
 
 # Test from the example in the book-tutorial(учебник)
-GenerationOfKElementSubsetsNElementSet(7, 5)
+GenerationOfKElementSubsetsNElementSet(3, 2)
 
 
 
