@@ -35,11 +35,11 @@ A = np.array([
 ])
 losses = [0.1, 1, 0.1, 1, 0.1, 1, 0.1, 1, 0.1]
 GetInfoAboutBastMilitaryBase(size, A, losses)
+
 # endregion
 
 #region InvalidTests
 print("\nТЕСТИРОВАНИЕ РАБОТОСПОСОБНОСТИ:")
-
 
 print("\nCлучай, когда размерность(n) не целое")
 size = 2.5
@@ -54,7 +54,7 @@ A = np.array([
     [0, 0, 0, 0, 1, 0, 1, 1, 1],
     [0, 0, 0, 0, 0, 1, 0, 1, 1]
 ])
-losses = [1, 1, 1, 1, 1, 1, 1] #размерность 7
+losses = [1, 1, 1, 1, 1, 1, 1, 1, 1]
 GetInfoAboutBastMilitaryBase(size, A, losses)
 
 print("\nCлучай, когда размерность(n) <= 0")
@@ -126,7 +126,6 @@ except:
 if not error:
     losses = [1, 1, 1, 1, 1, 1, 1, 1, 1]
     GetInfoAboutBastMilitaryBase(size, A, losses)
-
 
 #endregion
 
