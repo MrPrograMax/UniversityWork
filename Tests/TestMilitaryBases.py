@@ -127,4 +127,20 @@ if not error:
     losses = [1, 1, 1, 1, 1, 1, 1, 1, 1]
     GetInfoAboutBastMilitaryBase(size, A, losses)
 
+print("\nCлучай, когда матрица не принадлежит классу numpy.ndarray")
+size = 9
+A = list([
+    [1, 1, 0, 1, 0, 0, 0, 0, 0],
+    [1, 1, 1, 0, 1, 0, 0, 0, 0],
+    [0, 1, 1, 0, 0, 1, 0, 0, 0],
+    [1, 0, 0, 1, 1, 0, 1, 0, 0],
+    [0, 1, 0, 1, 1, 1, 0, 1, 0],
+    [0, 0, 1, 0, 1, 1, 0, 0, 1],
+    [0, 0, 0, 1, 0, 0, 1, 1, 0],
+    [0, 0, 0, 0, 1, 0, 1, 1, 1],
+    [0, 0, 0, 0, 0, 1, 0, 1, 1]
+])
+losses = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+GetInfoAboutBastMilitaryBase(size, A, losses)
+
 #endregion
