@@ -38,4 +38,3 @@ def GetGoodData(arr):
 
 # Test from the example in the book-tutorial(учебник)
 a = GenerationOfKElementSubsetsNElementSet(7, 3)
-print(a)
