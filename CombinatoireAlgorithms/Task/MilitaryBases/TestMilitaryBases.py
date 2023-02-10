@@ -1,5 +1,5 @@
 import numpy as np
-from CombinatoireAlgorithms.TaskMilitaryBases import GetInfoAboutBastMilitaryBase
+from CombinatoireAlgorithms.Task.MilitaryBases.MilitaryBases import GetInfoAboutBastMilitaryBase
 
 #region ValidTests
 print("ТЕСТИРОВАНИЕ АЛГОРИТМА:\n")

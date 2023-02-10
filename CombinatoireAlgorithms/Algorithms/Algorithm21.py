@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 def GenerationOfNbitBinaryVectors(n, flagOnPrint=False):
@@ -30,3 +31,19 @@ def IsContainsOnlyUnits(arr):
             return False
 
     return True
+
+
+def TestAlg(end):
+    end += 1
+    operations = []
+    n = range(1, end)
+    for i in range(1, end):
+        operations.append(GenerationOfNbitBinaryVectors(i))
+
+    data = pd.DataFrame(
+        {
+            'n': n,
+            'operations': operations
+        }
+    )
+    print(data)
