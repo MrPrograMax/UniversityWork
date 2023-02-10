@@ -1,6 +1,7 @@
 import sys
 import itertools as iter
 from time import perf_counter
+import numpy as np
 
 def GetInfoAboutBastMilitaryBase(numberOfAreas, neighborhoodMatrix, losses):
     # asymptotic = Θ(n^3 * n!)
@@ -47,24 +48,29 @@ def GetSumOfVectors(arrays, keys):
     return result
 
 
-def IsValid(n, A, c):
-    """ n is numberOfAreas 
-        A is neighborhoodMatrix 
-        c is losses
+def IsValid(numberOfAreas, Matrix, losses):
+    """ numberOfAreas is n
+        Matrix is A
+        losses is c
     """
-    if not isinstance(n, int):
+
+    if not isinstance(numberOfAreas, int):
         print(">> Ошибка! Код: 101: Размерность не является целочисленной")
         return False
 
-    if n <= 0:
+    if not isinstance(Matrix, np.ndarray):
+        print(">> Ошибка! Код: 202: Матрица не принадлежит классу numpy.ndarray")
+        return False
+    
+    if numberOfAreas <= 0:
         print(">> Ошибка! Код: 102: Размерность нулевая или отрицательная")
         return False
     
-    if n != len(A):
+    if numberOfAreas != len(Matrix):
         print(">> Ошибка! Код: 103: Размерность не соответствует колличеству векторов в матрице!")
         return False
     
-    if n != len(c):
+    if numberOfAreas != len(losses):
         print(">> Ошибка! Код: 104: Размерность не соответствует колличеству элементов в векторе потерь!")
         return False
 
