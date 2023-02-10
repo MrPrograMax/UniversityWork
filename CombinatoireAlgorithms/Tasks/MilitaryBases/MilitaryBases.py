@@ -3,12 +3,13 @@ import itertools as iter
 from time import perf_counter
 import numpy as np
 
+
 def GetInfoAboutBastMilitaryBase(numberOfAreas, neighborhoodMatrix, losses):
     # asymptotic = Θ(n^3 * n!)
 
-    time_start = perf_counter() #timer
+    time_start = perf_counter()  # timer
 
-    if IsValid(numberOfAreas, neighborhoodMatrix, losses) == False:
+    if not IsValid(numberOfAreas, neighborhoodMatrix, losses):
         return 0
 
     minSum = sys.maxsize * 2 + 1  # int max value
@@ -28,8 +29,9 @@ def GetInfoAboutBastMilitaryBase(numberOfAreas, neighborhoodMatrix, losses):
                     minSum = sum
                     indexBase = curKeys
 
-    time_end = perf_counter() 
-    print(f"Минимальная сумма: {minSum}\nРасположение баз: {indexBase}\nСоответствующее кол-во баз: {len(indexBase)}\nВремя работы: {time_end-time_start}")
+    time_end = perf_counter()
+    print(
+        f"Минимальная сумма: {minSum}\nРасположение баз: {indexBase}\nСоответствующее кол-во баз: {len(indexBase)}\nВремя работы: {time_end - time_start}")
 
 
 def IsNoneZero(arr):
@@ -61,15 +63,15 @@ def IsValid(numberOfAreas, Matrix, losses):
     if not isinstance(Matrix, np.ndarray):
         print(">> Ошибка! Код: 202: Матрица не принадлежит классу numpy.ndarray")
         return False
-    
+
     if numberOfAreas <= 0:
         print(">> Ошибка! Код: 102: Размерность нулевая или отрицательная")
         return False
-    
+
     if numberOfAreas != len(Matrix):
         print(">> Ошибка! Код: 103: Размерность не соответствует колличеству векторов в матрице!")
         return False
-    
+
     if numberOfAreas != len(losses):
         print(">> Ошибка! Код: 104: Размерность не соответствует колличеству элементов в векторе потерь!")
         return False
