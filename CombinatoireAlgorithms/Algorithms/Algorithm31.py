@@ -10,7 +10,7 @@ def GenerationOfKElementSubsetsNElementSet(n, k):
     result = np.append(result, [GetGoodData(A)], axis=1)
     p = k
     while True:
-        #PrintCurrentValue(A, p)
+        PrintCurrentValue(A, p)
         result = np.append(result, [GetGoodData(A)], axis=0)
         if A[k] == n:
             p = p - 1
@@ -23,6 +23,7 @@ def GenerationOfKElementSubsetsNElementSet(n, k):
         else:
             break
 
+    print(len(result))
     result = np.delete(result, 0, axis=0)
     return result
 
@@ -40,5 +41,5 @@ def GetGoodData(arr):
 
 
 # Test from the example in the book-tutorial(учебник)
-a = GenerationOfKElementSubsetsNElementSet(3, 3)
+a = GenerationOfKElementSubsetsNElementSet(6, 2)
 print(a)

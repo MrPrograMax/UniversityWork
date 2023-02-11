@@ -20,7 +20,7 @@ class Point:
 
 def IsRegularSet(set):
     countRigthtTriangles = 0
-    needCount = len(list(iter.combinations(set, 2)))
+    needCount = len(GenerationOfKElementSubsetsNElementSet(len(set), 2))
     combinations = GenerationOfKElementSubsetsNElementSet(len(set), 3)
     for i in combinations:
         a = set[int(i[0])]
