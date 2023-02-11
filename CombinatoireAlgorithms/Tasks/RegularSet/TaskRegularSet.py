@@ -1,6 +1,8 @@
 import itertools as iter
 import math
 
+from CombinatoireAlgorithms.Algorithms.Algorithm31 import GenerationOfKElementSubsetsNElementSet
+
 
 class Point:
     def __init__(self, x, y):
@@ -19,11 +21,11 @@ class Point:
 def IsRegularSet(set):
     countRigthtTriangles = 0
     needCount = len(list(iter.combinations(set, 2)))
-    combinations = list(iter.combinations(set, 3))
+    combinations = GenerationOfKElementSubsetsNElementSet(len(set), 3)
     for i in combinations:
-        a = i[0]
-        b = i[1]
-        c = i[2]
+        a = set[int(i[0])]
+        b = set[int(i[1])]
+        c = set[int(i[2])]
         if IsRightTriangle(a, b, c):
             countRigthtTriangles += 3
 
@@ -40,5 +42,6 @@ def IsRightTriangle(a,b,c):
 a = Point(0, 0)
 b = Point(5, 5 * math.sqrt(3))
 c = Point(10, 0)
-A = [a, b, c]
+d = Point(10, 0)
+A = [a, b, c, d]
 print(IsRegularSet(A))
