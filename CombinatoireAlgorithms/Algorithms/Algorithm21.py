@@ -47,3 +47,5 @@ def TestAlg(end):
         }
     )
     print(data)
+
+TestAlg(20)
