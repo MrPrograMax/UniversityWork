@@ -12,10 +12,11 @@ print(f"Для множества {array}\nРегулярность = {IsRegular
 print("Точек меньше чем 3")
 a = Point(0, 0)
 b = Point(5, 5 * math.sqrt(3))
+array = [a, b]
 print(f"Для множества {array}\nРегулярность = {IsRegularSet(array)}\n")
 
 print("ТЕСТИРОВАНИЕ РАБОТОСПОСОБНОСТИ\n")
 
 print("Элемнеты принаделажат классу Point(x,y)")
-arrray = [1, 3, 4]
+array = [1, 3, 4]
 print(f"Для множества {array}\nРегулярность = {IsRegularSet(array)}\n")

@@ -5,6 +5,22 @@ import math
 from CombinatoireAlgorithms.Algorithms.Algorithm31 import GenerationOfKElementSubsetsNElementSet
 
 
+def IsValid(set):
+    """
+    set its list of class Point
+    """
+    if len(set) < 3:
+        print(">> Ошибка! Код: 101: Размерность массива меньше 3")
+        return False
+
+    for i in range(len(set)):
+        if not isinstance(set[i], Point):
+            print(">> Ошибка! Код: 103: Элементы множества не являются объектами класса Point")
+            return False
+
+    return True
+
+
 class Point:
     def __init__(self, x, y):
         self.x = x
@@ -15,12 +31,16 @@ class Point:
         distance = ((self.x - point.x) ** 2 + (self.y - point.y) ** 2) ** 0.5
         return distance
 
+    def __repr__(self):
+        return f"Point({self.x};{self.y})"
+
     def __str__(self):
         return f"({self.x}; {self.y})"
 
 
-def IsRegularSet(set):
 
+
+def IsRegularSet(set):
     if not IsValid(set):
         return 0
 
@@ -38,7 +58,7 @@ def IsRegularSet(set):
     return len(dict) == countOfPointsPair
 
 
-def IsRightTriangle(a,b,c):
+def IsRightTriangle(a, b, c):
     dist1 = a.distance(b)
     dist2 = a.distance(c)
     dist3 = b.distance(c)
@@ -52,15 +72,5 @@ d = Point(10, 0)
 A = [a, b, c]
 print(IsRegularSet(A))
 
-def IsValid(set):
-    """
-    set its list of class Point
-    """
-    if len(set) < 3:
-        print(">> Ошибка! Код: 101: Размерность массива не равна 3")
-        return False
 
-    for i in range(len(set)):
-        if not isinstance(set[i], Point):
-            print(">> Ошибка! Код: 103: Элементы множества не являются объектами класса Point")
-            return False
+
