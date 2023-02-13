@@ -20,6 +20,10 @@ class Point:
 
 
 def IsRegularSet(set):
+
+    if not IsValid(set):
+        return 0
+
     dict = {}
     countOfPointsPair = len(GenerationOfKElementSubsetsNElementSet(len(set), 2))
     combinations = GenerationOfKElementSubsetsNElementSet(len(set), 3)
@@ -47,3 +51,21 @@ c = Point(10, 0)
 d = Point(10, 0)
 A = [a, b, c]
 print(IsRegularSet(A))
+
+def IsValid(set):
+    """
+    set it's list of class Point
+    """
+    if len(set) != 3:
+        print(">> Ошибка! Код: 101: Размерность массива не равна 3")
+        return False
+
+    if not isinstance(set, list):
+        print(">> Ошибка! Код: 102: Множество не принадлежит классу list")
+        return False
+
+    for i in range(len(set)):
+        if not isinstance(set[i], Point):
+            print(">> Ошибка! Код: 103: Элементы множества не являются объектами класса Point")
+            return False
+
