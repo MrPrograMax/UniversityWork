@@ -56,7 +56,7 @@ def IsValid(set):
     """
     set its list of class Point
     """
-    if len(set) != 3:
+    if len(set) < 3:
         print(">> Ошибка! Код: 101: Размерность массива не равна 3")
         return False
 
