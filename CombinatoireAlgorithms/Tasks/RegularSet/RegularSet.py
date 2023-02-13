@@ -54,18 +54,13 @@ print(IsRegularSet(A))
 
 def IsValid(set):
     """
-    set it's list of class Point
+    set its list of class Point
     """
     if len(set) != 3:
         print(">> Ошибка! Код: 101: Размерность массива не равна 3")
-        return False
-
-    if not isinstance(set, list):
-        print(">> Ошибка! Код: 102: Множество не принадлежит классу list")
         return False
 
     for i in range(len(set)):
         if not isinstance(set[i], Point):
             print(">> Ошибка! Код: 103: Элементы множества не являются объектами класса Point")
             return False
-

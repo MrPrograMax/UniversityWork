@@ -10,4 +10,4 @@ array = [a, b, c]
 if IsRegularSet(array):
   print(f"Множество {array}\nРегулярно")
 else:
-  print(f"Множество {array}\nНерегулярно)
+  print(f"Множество {array}\nНерегулярно")
