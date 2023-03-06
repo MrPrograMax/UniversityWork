@@ -1,4 +1,4 @@
-from ResgularSet import *
+from RegularSet import IsRegularSet
 
 print("ТЕСТИРОВАНИЕ АЛГОРИТМА\n")
 
