@@ -1,21 +1,36 @@
-print("hello im alg51, but i dont warking yet! ")
-
 import numpy as np
-print("hello im alg51, but i dont warking yet!")
 
-def depth_search(L):
-    n = len(L)
-    stack=[]
+def width_graph_search(first_point, Links):
+    """
+        first_point - номер первой вершины графа, отчет с нуля
+        Links - связи точек в графе по номерам 
+    """
+    ans_queue = [first_point]
+    
+    for point in ans_queue:
+        for link in Links[point]:
+            if link not in ans_queue:
+                ans_queue.append(link)
+    
+    return ans_queue
 
-    for i in range(n):
-        stack.append(i)
-        x = [i]
-        for j in range(n):
-            if j not in x and :
-                stack.append(j)
-                x.append(j)
+def depth_graph_search(first_point, Links):
+    """
+        first_point - номер первой вершины графа, отчет с нуля
+        Links - связи точек в графе по номерам 
+    """
+    ans_stack = [first_point]
+    
+    for point in ans_stack:
+        reversed_array = Links[point].copy()
+        reversed_array.reverse()
 
-    return "Пока возвращять нечего, печальное зрелище"
+        for link in reversed_array:
+            if link not in ans_stack:
+                ans_stack.append(link)
+    
+    return ans_stack
+
 
 Links = np.array([
     [0, 1, 1, 0, 1, 0, 0],
@@ -26,6 +41,7 @@ Links = np.array([
     [0, 0, 0, 0, 1, 0, 1],
     [0, 0, 0, 0, 1, 1, 0]
 ])
+
 LN = [
     [1,2,4],
     [0,3,4],
@@ -35,3 +51,7 @@ LN = [
     [4,6],
     [4,5]
 ]
+for i in range(len(LN)):
+    print(i)
+    print('Ширина = ',width_graph_search(i, LN))
+    print('Долгота = ',depth_graph_search(i, LN))
