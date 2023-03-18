@@ -1,7 +1,5 @@
 from queue import Queue
 import numpy as np
-def depth_first_search(array:list):
-    return 0
 
 def breadth_search(abjacency_matrix, start_vertix):
     X = [0] * len(abjacency_matrix)
