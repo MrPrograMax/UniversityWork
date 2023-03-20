@@ -181,6 +181,7 @@ LN = [
     [4, 5]
 ]
 
+"""
 graph = Graph(LN)
 #init(autoreset=True)
 # for i in range(len(LN)):
@@ -194,6 +195,7 @@ result, count = graph.search_all(0, 'width')
 print(f'Пройденный полностью граф(search_all) = {result}\nКолличество графов = {count}')
 result, count = graph.search_split('width')
 print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}\n')
+"""
 
 double_graph = [
     [1],
@@ -212,6 +214,7 @@ print(f'Пройденный полностью граф(search_all) = {result}\
 result, count = dgraph.search_split('width')
 print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}\n')
 
+"""
 orgraf_snake = [
     [1, 2],
     [3, 4],
@@ -223,8 +226,5 @@ orgraf_snake = [
 
 orgraph = Graph(orgraf_snake)
 print('ORGPARH:')
-print(f'Пройденный граф(search) = {orgraph.search(0)}')
-result, count = orgraph.search_all(0, 'width')
-print(f'Пройденный полностью граф(search_all) = {result}\nКолличество графов = {count}')
-result, count = orgraph.search_split('width')
-print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}\n')
+print(f'Пройденный граф(search) = {orgraph.search(1)}')
+"""
