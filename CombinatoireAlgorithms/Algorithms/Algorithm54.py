@@ -4,7 +4,6 @@
 3. Отыскание остовного дерева          (Поиск в ширину)
 """
 from queue import Queue, LifoQueue
-import numpy as np
 
 class Graph:
     nodes = []  # Граф
@@ -33,7 +32,7 @@ class Graph:
     def search(self, index_point=0, key_word='width'):
         """
         index_point - начальная точка обхода
-        key_word - метод обхода 'width' и 'depth
+        key_word - метод обхода 'width' и 'depth'
         возвращает массив с пройдеными точками
         """
         if key_word == 'width':
@@ -71,13 +70,13 @@ class Graph:
         local_marked_points = [0]*size  # Пройденные точки в этой функции
         result_all = []
         count_of_subgraphs = 1  # Колличество найденых подграфов
-
+       
         # Начинаем с первого обхода
         temp_search = self.search(index_point, 'width')
-
+        
         # Заполняем результирующий массив первым обходом
         result_all += temp_search
-
+        
         # Заполняем пройденные точки первого обхода
         for i in range(size):
             local_marked_points[i] += self.marked_poins[i]
@@ -132,8 +131,10 @@ class Graph:
     
     def print_all_info(self, index_point=0, key_word='width'):
         print(f'Пройденный граф(search) = {self.search(index_point, key_word)}')
+        
         result, count = self.search_all(index_point, key_word)
         print(f'Пройденный полностью граф(search_all) = {result}')
+        
         result, count = self.search_split(key_word)
         print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}\n')
 
