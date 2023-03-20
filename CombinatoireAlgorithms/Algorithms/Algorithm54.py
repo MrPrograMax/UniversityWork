@@ -3,7 +3,7 @@
 2. Достижимость вершин орграфа         (Поиск в ширину)
 3. Отыскание остовного дерева          (Поиск в ширину)
 """
-#region Постановка решения задачи
+# region Постановка решения задачи
 """
 1. Задача выделения компонент связности графа. Эта задача мо-
 жет быть решена с помощью поиска в глубину или ширину. Пусть поиск
@@ -39,15 +39,16 @@
 """
 # endregion
 
+
+
+
 from queue import Queue, LifoQueue
 from colorama import init, Fore
 import numpy as np
-
-
 class Graph:
-    nodes = [] # Граф
-    marked_points=[] # Текущие пройденые точки графа
-    
+    nodes = []  # Граф
+    marked_points = []  # Текущие пройденые точки графа
+
     def __init__(self, friends, values=0):
         """
         friends - связи точки графа
@@ -60,7 +61,7 @@ class Graph:
 
         for i in range(len(friends)):
             self.nodes.append(Node(values[i], friends[i]))
-        
+
         self.marked_poins = [0] * len(self.nodes)
 
     def search(self, index_point=0, key_word='width'):
@@ -101,17 +102,17 @@ class Graph:
             2. Колличество найденых подграфов
         """
         size = len(self.nodes)
-        local_marked_points = [0]*size # Пройденные точки в этой функции
-        result = []
-        count_of_subgraphs = 1 # Колличество найденых подграфов
+        local_marked_points = [0]*size  # Пройденные точки в этой функции
+        result_all = []
+        count_of_subgraphs = 1  # Колличество найденых подграфов
 
         # Начинаем с первого обхода
         temp_search = self.search(index_point, 'width')
-        
-        #Заполняем результирующий массив первым обходом
-        result += temp_search
 
-        #Заполняем пройденные точки первого обхода
+        # Заполняем результирующий массив первым обходом
+        result_all += temp_search
+
+        # Заполняем пройденные точки первого обхода
         for i in range(size):
             local_marked_points[i] += self.marked_poins[i]
 
@@ -120,32 +121,32 @@ class Graph:
             if local_marked_points[i] == 0:
                 temp_search = self.search(i, 'width')
                 # Присоединение к результирующему списку новый подграф
-                result += temp_search
+                result_all += temp_search
                 # Добавление точек в уже пройденные
                 for i in range(size):
                     local_marked_points[i] += self.marked_poins[i]
 
                 count_of_subgraphs += 1
-        
-        return result, count_of_subgraphs
-    
+
+        return result_all, count_of_subgraphs
+
     def search_split(self, key_word='width'):
         """
         key_word - метод обхода
         Возвращает список со списками обходов всех подграфов
         """
-        result = []
+        result_split = []
         size = len(self.nodes)
-        local_marked_points = [0]*size # Пройденные точки в этой функции
-        count_of_subgraphs = 1 # Колличество найденых подграфов
+        local_marked_points = [0]*size  # Пройденные точки в этой функции
+        count_of_subgraphs = 1  # Колличество найденых подграфов
 
         # Начинаем с первого обхода
-        temp_search = self.search() # По уумолчанию index=0, key_word='width
-        
-        #Заполняем результирующий массив первым обходом
-        result.append( temp_search )
+        temp_search = self.search()  # По уумолчанию index=0, key_word='width
 
-        #Заполняем пройденные точки первого обхода
+        # Заполняем результирующий массив первым обходом
+        result_split.append(temp_search)
+
+        # Заполняем пройденные точки первого обхода
         for i in range(size):
             local_marked_points[i] += self.marked_poins[i]
 
@@ -154,14 +155,15 @@ class Graph:
             if local_marked_points[i] == 0:
                 temp_search = self.search(i, 'width')
                 # Добваление в результирующий спискок новый подграф
-                result.append( temp_search )
+                result_split.append(temp_search)
                 # Добавление точек в уже пройденные
                 for i in range(size):
                     local_marked_points[i] += self.marked_poins[i]
 
                 count_of_subgraphs += 1
-        
-        return result, count_of_subgraphs
+
+        return result_split, count_of_subgraphs
+
 
 class Node:
     def __init__(self, value, links):
@@ -179,28 +181,50 @@ LN = [
     [4, 5]
 ]
 
-#graph = Graph(LN)
+graph = Graph(LN)
 #init(autoreset=True)
-#for i in range(len(LN)):
+# for i in range(len(LN)):
 #    print(Fore.GREEN + f"Начальная точка: {i}")
 #    print(f"В ширину: {graph.search(i, 'width')}")
 #    print(f"В глубину: {graph.search(i, 'depth')}\n")
 
+print('SRAIGHT GRAPH:')
+print(f'Пройденный граф(search) = {graph.search(0)}')
+result, count = graph.search_all(0, 'width')
+print(f'Пройденный полностью граф(search_all) = {result}\nКолличество графов = {count}')
+result, count = graph.search_split('width')
+print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}\n')
 
 double_graph = [
     [1],
     [0],
-    [3,4],
-    [2,4],
-    [3,2]
+    [3, 4],
+    [2, 4],
+    [3, 2]
 ]
 
-graph = Graph(double_graph)
+dgraph = Graph(double_graph)
 
-print( f'Пройденный граф(search) = {graph.search(0)}' )
-
-result, count = graph.search_all(0, 'width')
+print('DOUBLE GRAPH:')
+print(f'Пройденный граф(search) = {dgraph.search(0)}')
+result, count = dgraph.search_all(0, 'width')
 print(f'Пройденный полностью граф(search_all) = {result}\nКолличество графов = {count}')
+result, count = dgraph.search_split('width')
+print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}\n')
 
-result, count = graph.search_split('width')
-print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}')
+orgraf_snake = [
+    [1, 2],
+    [3, 4],
+    [4],
+    [5],
+    [5],
+    []
+]
+
+orgraph = Graph(orgraf_snake)
+print('ORGPARH:')
+print(f'Пройденный граф(search) = {orgraph.search(0)}')
+result, count = orgraph.search_all(0, 'width')
+print(f'Пройденный полностью граф(search_all) = {result}\nКолличество графов = {count}')
+result, count = orgraph.search_split('width')
+print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}\n')
