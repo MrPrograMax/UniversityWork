@@ -63,7 +63,7 @@ class Graph:
         
         self.marked_poins = [0] * len(self.nodes)
 
-    def search(self, index_point, key_word='width'):
+    def search(self, index_point=0, key_word='width'):
         """
         index_point - начальная точка обхода
         key_word - метод обхода 'width' и 'depth
@@ -92,7 +92,7 @@ class Graph:
 
         return result
 
-    def search_all(self, index_point, key_word='width'):
+    def search_all(self, index_point=0, key_word='width'):
         """
         index_point - начальная точка
         key_word - Ключевое слово 'width' или 'depth', для обхода в ширину или глубину
@@ -121,6 +121,40 @@ class Graph:
                 temp_search = self.search(i, 'width')
                 # Присоединение к результирующему списку новый подграф
                 result += temp_search
+                # Добавление точек в уже пройденные
+                for i in range(size):
+                    local_marked_points[i] += self.marked_poins[i]
+
+                count_of_subgraphs += 1
+        
+        return result, count_of_subgraphs
+    
+    def search_split(self, key_word='width'):
+        """
+        key_word - метод обхода
+        Возвращает список со списками обходов всех подграфов
+        """
+        result = []
+        size = len(self.nodes)
+        local_marked_points = [0]*size # Пройденные точки в этой функции
+        count_of_subgraphs = 1 # Колличество найденых подграфов
+
+        # Начинаем с первого обхода
+        temp_search = self.search() # По уумолчанию index=0, key_word='width
+        
+        #Заполняем результирующий массив первым обходом
+        result.append( temp_search )
+
+        #Заполняем пройденные точки первого обхода
+        for i in range(size):
+            local_marked_points[i] += self.marked_poins[i]
+
+        # Пока не будут пройдены все точки графа, цикл будет запускать поиск по порядку
+        for i in range(size):
+            if local_marked_points[i] == 0:
+                temp_search = self.search(i, 'width')
+                # Добваление в результирующий спискок новый подграф
+                result.append( temp_search )
                 # Добавление точек в уже пройденные
                 for i in range(size):
                     local_marked_points[i] += self.marked_poins[i]
@@ -165,5 +199,8 @@ graph = Graph(double_graph)
 
 print( f'Пройденный граф(search) = {graph.search(0)}' )
 
-result, count = graph.search_all(0, 'width') 
+result, count = graph.search_all(0, 'width')
 print(f'Пройденный полностью граф(search_all) = {result}\nКолличество графов = {count}')
+
+result, count = graph.search_split('width')
+print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}')
