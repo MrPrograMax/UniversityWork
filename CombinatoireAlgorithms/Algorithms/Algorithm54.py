@@ -163,7 +163,13 @@ class Graph:
                 count_of_subgraphs += 1
 
         return result_split, count_of_subgraphs
-
+    
+    def print_all_info(self, index_point=0, key_word='width'):
+        print(f'Пройденный граф(search) = {self.search(index_point, key_word)}')
+        result, count = self.search_all(index_point, key_word)
+        print(f'Пройденный полностью граф(search_all) = {result}')
+        result, count = self.search_split(key_word)
+        print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}\n')
 
 class Node:
     def __init__(self, value, links):
@@ -206,13 +212,14 @@ double_graph = [
 ]
 
 dgraph = Graph(double_graph)
+dgraph.print_all_info()
 
-print('DOUBLE GRAPH:')
-print(f'Пройденный граф(search) = {dgraph.search(0)}')
-result, count = dgraph.search_all(0, 'width')
-print(f'Пройденный полностью граф(search_all) = {result}\nКолличество графов = {count}')
-result, count = dgraph.search_split('width')
-print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}\n')
+#print('DOUBLE GRAPH:')
+#print(f'Пройденный граф(search) = {dgraph.search(0)}')
+#result, count = dgraph.search_all(0, 'width')
+#print(f'Пройденный полностью граф(search_all) = {result}\nКолличество графов = {count}')
+#result, count = dgraph.search_split('width')
+#print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}\n')
 
 """
 orgraf_snake = [
