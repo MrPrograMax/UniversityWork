@@ -39,3 +39,96 @@
 """
 # endregion
 
+from queue import Queue, LifoQueue
+from colorama import init, Fore
+import numpy as np
+
+
+class Graph:
+    nodes = [] # Граф
+    marked_points=[] # Текущие пройденые точки графа
+    
+    def __init__(self, friends, values=0):
+        """
+        friends - связи точки графа
+        values - значение для этой точки
+        """
+        if values == 0:
+            values = range(len(friends))
+        elif len(friends) != len(values):
+            raise Exception("Unequal sizes!")
+
+        for i in range(len(friends)):
+            self.nodes.append(Node(values[i], friends[i]))
+        
+        self.marked_poins = [0] * len(self.nodes)
+
+    def search(self, index_point, key_word='width'):
+        """
+        index_point - начальная точка обхода
+        key_word - метод обхода 'width' и 'depth
+        возвращает массив с пройдеными точками
+        """
+        if key_word == 'width':
+            queue = Queue()
+        elif key_word == 'depth':
+            queue = LifoQueue()
+        else:
+            raise Exception("Incorrect key word")
+
+        result = []
+        self.marked_poins = [0] * len(self.nodes)
+        queue.put(index_point)
+
+        self.marked_poins[index_point] = 1
+
+        while queue.qsize() != 0:
+            index = queue.get()
+            result.append(index)
+            for i in self.nodes[index].links:
+                if self.marked_poins[i] == 0:
+                    queue.put(i)
+                    self.marked_poins[i] = 1
+
+        return result
+
+    def search_all(self, index_point, key_word='width'):
+        """
+        index_point - начальная точка
+        key_word - Ключевое слово 'width' или 'depth', для обхода в ширину или глубину
+        Возвращает массив с полным обходом графа
+        """
+        size = len(self.nodes)
+        local_marked_points = [0]*size
+        result = [0]*size
+        
+        first_search = self.search(index_point, 'width')
+        #for i in result:
+
+        #while local_marked_points != [1] * size:
+            
+            
+
+
+class Node:
+    def __init__(self, value, links):
+        self.value = value
+        self.links = links
+
+
+LN = [
+    [1, 2, 4],
+    [0, 3, 4],
+    [0, 4],
+    [1, 4],
+    [0, 1, 2, 3, 4, 5, 6],
+    [4, 6],
+    [4, 5]
+]
+
+graph = Graph(LN)
+init(autoreset=True)
+for i in range(len(LN)):
+    print(Fore.GREEN + f"Начальная точка: {i}")
+    print(f"В ширину: {graph.search(i, 'width')}")
+    print(f"В глубину: {graph.search(i, 'depth')}\n")
