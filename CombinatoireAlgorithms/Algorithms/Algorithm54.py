@@ -76,8 +76,8 @@ class Graph:
         else:
             raise Exception("Incorrect key word")
 
-        result = []
         self.marked_poins = [0] * len(self.nodes)
+        result = []
         queue.put(index_point)
 
         self.marked_poins[index_point] = 1
@@ -96,19 +96,38 @@ class Graph:
         """
         index_point - начальная точка
         key_word - Ключевое слово 'width' или 'depth', для обхода в ширину или глубину
-        Возвращает массив с полным обходом графа
+        Возвращает:
+            1. массив с полным обходом графа
+            2. Колличество найденых подграфов
         """
         size = len(self.nodes)
-        local_marked_points = [0]*size
-        result = [0]*size
+        local_marked_points = [0]*size # Пройденные точки в этой функции
+        result = []
+        count_of_subgraphs = 1 # Колличество найденых подграфов
+
+        # Начинаем с первого обхода
+        temp_search = self.search(index_point, 'width')
         
-        first_search = self.search(index_point, 'width')
-        #for i in result:
+        #Заполняем результирующий массив первым обходом
+        result += temp_search
 
-        #while local_marked_points != [1] * size:
-            
-            
+        #Заполняем пройденные точки первого обхода
+        for i in range(size):
+            local_marked_points[i] += self.marked_poins[i]
 
+        # Пока не будут пройдены все точки графа, цикл будет запускать поиск по порядку
+        for i in range(size):
+            if local_marked_points[i] == 0:
+                temp_search = self.search(i, 'width')
+                # Присоединение к результирующему списку новый подграф
+                result += temp_search
+                # Добавление точек в уже пройденные
+                for i in range(size):
+                    local_marked_points[i] += self.marked_poins[i]
+
+                count_of_subgraphs += 1
+        
+        return result, count_of_subgraphs
 
 class Node:
     def __init__(self, value, links):
@@ -126,9 +145,25 @@ LN = [
     [4, 5]
 ]
 
-graph = Graph(LN)
-init(autoreset=True)
-for i in range(len(LN)):
-    print(Fore.GREEN + f"Начальная точка: {i}")
-    print(f"В ширину: {graph.search(i, 'width')}")
-    print(f"В глубину: {graph.search(i, 'depth')}\n")
+#graph = Graph(LN)
+#init(autoreset=True)
+#for i in range(len(LN)):
+#    print(Fore.GREEN + f"Начальная точка: {i}")
+#    print(f"В ширину: {graph.search(i, 'width')}")
+#    print(f"В глубину: {graph.search(i, 'depth')}\n")
+
+
+double_graph = [
+    [1],
+    [0],
+    [3,4],
+    [2,4],
+    [3,2]
+]
+
+graph = Graph(double_graph)
+
+print( f'Пройденный граф(search) = {graph.search(0)}' )
+
+result, count = graph.search_all(0, 'width') 
+print(f'Пройденный полностью граф(search_all) = {result}\nКолличество графов = {count}')
