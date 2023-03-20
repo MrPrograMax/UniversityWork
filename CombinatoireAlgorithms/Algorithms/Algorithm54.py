@@ -186,42 +186,6 @@ LN = [
     [4, 6],
     [4, 5]
 ]
-
-"""
-graph = Graph(LN)
-#init(autoreset=True)
-# for i in range(len(LN)):
-#    print(Fore.GREEN + f"Начальная точка: {i}")
-#    print(f"В ширину: {graph.search(i, 'width')}")
-#    print(f"В глубину: {graph.search(i, 'depth')}\n")
-
-print('SRAIGHT GRAPH:')
-print(f'Пройденный граф(search) = {graph.search(0)}')
-result, count = graph.search_all(0, 'width')
-print(f'Пройденный полностью граф(search_all) = {result}\nКолличество графов = {count}')
-result, count = graph.search_split('width')
-print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}\n')
-"""
-
-double_graph = [
-    [1],
-    [0],
-    [3, 4],
-    [2, 4],
-    [3, 2]
-]
-
-dgraph = Graph(double_graph)
-dgraph.print_all_info()
-
-#print('DOUBLE GRAPH:')
-#print(f'Пройденный граф(search) = {dgraph.search(0)}')
-#result, count = dgraph.search_all(0, 'width')
-#print(f'Пройденный полностью граф(search_all) = {result}\nКолличество графов = {count}')
-#result, count = dgraph.search_split('width')
-#print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}\n')
-
-"""
 orgraf_snake = [
     [1, 2],
     [3, 4],
@@ -230,8 +194,23 @@ orgraf_snake = [
     [5],
     []
 ]
+double_graph = [
+    [1],
+    [0],
+    [3, 4],
+    [2, 4],
+    [3, 2]
+]
 
-orgraph = Graph(orgraf_snake)
-print('ORGPARH:')
-print(f'Пройденный граф(search) = {orgraph.search(1)}')
-"""
+#graph = Graph(LN)
+#init(autoreset=True)
+# for i in range(len(LN)):
+#    print(Fore.GREEN + f"Начальная точка: {i}")
+#    print(f"В ширину: {graph.search(i, 'width')}")
+#    print(f"В глубину: {graph.search(i, 'depth')}\n")
+
+dgraph = Graph(double_graph)
+dgraph.print_all_info()
+
+#orgraph = Graph(orgraf_snake)
+
