@@ -1,17 +1,24 @@
-
+""" Импорт структуры очередь и стек(лифо) """
 from queue import Queue, LifoQueue
 
+
 class Node:
+    """Узел, содержит значение и ссылки"""
     def __init__(self, value, links):
         self.value = value
         self.links = links
-        
+
+
 class Edge:
+    """Ребро, содержит образующие точки, и свой вес"""
     def __init__(self, points, weight):
         self.edge = [points[0], points[1]]
         self.weight = weight
-        
+
+
 class Graph:
+    """Граф, инициализируется через Node"""
+    
     nodes = []  # Граф
     marked_points = []  # Текущие пройденые точки графа
 
@@ -71,13 +78,13 @@ class Graph:
         local_marked_points = [0]*size  # Пройденные точки в этой функции
         result_all = []
         count_of_subgraphs = 1  # Колличество найденых подграфов
-       
+
         # Начинаем с первого обхода
-        temp_search = self.search(index_point, 'width')
-        
+        temp_search = self.search(index_point, key_word)
+
         # Заполняем результирующий массив первым обходом
         result_all += temp_search
-        
+
         # Заполняем пройденные точки первого обхода
         for i in range(size):
             local_marked_points[i] += self.marked_poins[i]
@@ -85,7 +92,7 @@ class Graph:
         # Пока не будут пройдены все точки графа, цикл будет запускать поиск по порядку
         for i in range(size):
             if local_marked_points[i] == 0:
-                temp_search = self.search(i, 'width')
+                temp_search = self.search(i, key_word)
                 # Присоединение к результирующему списку новый подграф
                 result_all += temp_search
                 # Добавление точек в уже пройденные
@@ -119,7 +126,7 @@ class Graph:
         # Пока не будут пройдены все точки графа, цикл будет запускать поиск по порядку
         for i in range(size):
             if local_marked_points[i] == 0:
-                temp_search = self.search(i, 'width')
+                temp_search = self.search(i, key_word)
                 # Добваление в результирующий спискок новый подграф
                 result_split.append(temp_search)
                 # Добавление точек в уже пройденные
@@ -129,28 +136,46 @@ class Graph:
                 count_of_subgraphs += 1
 
         return result_split, count_of_subgraphs
-    
+
     def search_ostav(self, points, weights):
         if len(points) != len(weights):
-             raise Exception("Unequal sizes!")
-        
+            raise Exception("Unequal sizes!")
+
+        def edge_min(edge):
+            min_edge = edge[0]
+
+            for temp in edge:
+                if temp.weight < min_edge.weight:
+                    min_edge = temp
+
+            return min_edge
+
+        size = len(points)
         edges = []
-        
-        for i in len(points): 
+
+        for i in size:
             edges.append(Edge(points[i], weights[i]))
 
+        min_edge = edge_min(edges)
         ostav_result = []
+
+        for i in range(size-1):
+            # Пока что тут делать не понятно
+            if min_edge == i:
+                pass
 
         return ostav_result
 
     def print_all_info(self, index_point=0, key_word='width'):
         print(f'Пройденный граф(search) = {self.search(index_point, key_word)}')
-        
+
         result, count = self.search_all(index_point, key_word)
         print(f'Пройденный полностью граф(search_all) = {result}')
-        
+
         result, count = self.search_split(key_word)
-        print(f'Пройденные полностью подграфы(search_split) = {result}\nКолличество графов = {count}\n')
+        print(f'Пройденные полностью подграфы(search_split) = {result}')
+        print(f'Колличество графов = {count}\n')
+
 
 LN = [
     [1, 2, 4],
@@ -179,46 +204,46 @@ double_graph = [
     [3, 2]
 ]
 
-#graph = Graph(LN)
-#graph.print_all_info()
+# graph = Graph(LN)
+# graph.print_all_info()
 
 dgraph = Graph(double_graph)
 dgraph.print_all_info()
 
-#orgraph = Graph(orgraf_snake)
-#orgraph.print_all_info()
+# orgraph = Graph(orgraf_snake)
+# orgraph.print_all_info()
 
-ostav_graph =[
-    [1,5,4],
-    [0,2,4],
-    [1,3],
-    [2,4,5],
-    [0,1,3,5],
-    [0,3,4]
+ostav_graph = [
+    [1, 5, 4],
+    [0, 2, 4],
+    [1, 3],
+    [2, 4, 5],
+    [0, 1, 3, 5],
+    [0, 3, 4]
 ]
 
 ostav_weight = [
-    [10,8,9],
-    [10,2,6],
-    [2,5],
-    [5,4,6],
-    [9,6,4,1],
-    [8,3,1]
+    [10, 8, 9],
+    [10, 2, 6],
+    [2, 5],
+    [5, 4, 6],
+    [9, 6, 4, 1],
+    [8, 3, 1]
 ]
 
 ost_edges = [
-    [0,1],
-    [0,5],
-    [1,2],
-    [1,4],
-    [2,3],
-    [3,4],
-    [3,5],
-    [4,0],
-    [4,5]    
+    [0, 1],
+    [0, 5],
+    [1, 2],
+    [1, 4],
+    [2, 3],
+    [3, 4],
+    [3, 5],
+    [4, 0],
+    [4, 5]
 ]
-#тут одного не хватает да и вцелом ничего не работает
-ost_edges_weights=[
+# тут одного не хватает да и вцелом ничего не работает
+ost_edges_weights = [
     10,
     8,
     2,
