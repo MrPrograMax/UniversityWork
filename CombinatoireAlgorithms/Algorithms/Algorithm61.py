@@ -5,11 +5,13 @@ class Node:
     def __init__(self, value, links):
         self.value = value
         self.links = links
-
+class Edge:
+    def __init__(self, points, weight):
+        self.edge = [points[0], points[1]]
+        self.weight = weight
 class Graph:
     nodes = []  # Граф
     marked_points = []  # Текущие пройденые точки графа
-    
 
     def __init__(self, friends, values=0):
         """
@@ -126,6 +128,19 @@ class Graph:
 
         return result_split, count_of_subgraphs
     
+    def search_ostav(self, points, weights):
+        if len(points) != len(weights):
+             raise Exception("Unequal sizes!")
+        
+        edges = []
+        
+        for i in len(points): 
+            edges.append(Edge(points[i], weights[i]))
+
+        ostav_result = []
+
+        return ostav_result
+
     def print_all_info(self, index_point=0, key_word='width'):
         print(f'Пройденный граф(search) = {self.search(index_point, key_word)}')
         
@@ -144,6 +159,7 @@ LN = [
     [4, 6],
     [4, 5]
 ]
+
 orgraf_snake = [
     [1, 2],
     [3, 4],
@@ -168,3 +184,43 @@ dgraph.print_all_info()
 
 #orgraph = Graph(orgraf_snake)
 #orgraph.print_all_info()
+
+ostav_graph =[
+    [1,5,4],
+    [0,2,4],
+    [1,3],
+    [2,4,5],
+    [0,1,3,5],
+    [0,3,4]
+]
+ostav_weight = [
+    [10,8,9],
+    [10,2,6],
+    [2,5],
+    [5,4,6],
+    [9,6,4,1],
+    [8,3,1]
+]
+
+ost2 = [
+    [0,1],
+    [0,5],
+    [1,2],
+    [1,4],
+    [2,3],
+    [3,4],
+    [3,5],
+    [4,0],
+    [4,5]    
+]
+#тут одного не хватает да и вцелом ничего не работает
+ost2_weights=[
+    10,
+    8,
+    2,
+    6,
+    5,
+    3,
+    9,
+    1
+]
