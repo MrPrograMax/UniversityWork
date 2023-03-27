@@ -1,14 +1,15 @@
 
 from queue import Queue, LifoQueue
 
+class Node:
+    def __init__(self, value, links):
+        self.value = value
+        self.links = links
+
 class Graph:
     nodes = []  # Граф
     marked_points = []  # Текущие пройденые точки графа
     
-    class Node:
-        def __init__(self, value, links):
-            self.value = value
-            self.links = links
 
     def __init__(self, friends, values=0):
         """
