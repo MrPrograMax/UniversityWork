@@ -5,10 +5,12 @@ class Node:
     def __init__(self, value, links):
         self.value = value
         self.links = links
+        
 class Edge:
     def __init__(self, points, weight):
         self.edge = [points[0], points[1]]
         self.weight = weight
+        
 class Graph:
     nodes = []  # Граф
     marked_points = []  # Текущие пройденые точки графа
@@ -168,6 +170,7 @@ orgraf_snake = [
     [5],
     []
 ]
+
 double_graph = [
     [1],
     [0],
@@ -193,6 +196,7 @@ ostav_graph =[
     [0,1,3,5],
     [0,3,4]
 ]
+
 ostav_weight = [
     [10,8,9],
     [10,2,6],
@@ -202,7 +206,7 @@ ostav_weight = [
     [8,3,1]
 ]
 
-ost2 = [
+ost_edges = [
     [0,1],
     [0,5],
     [1,2],
@@ -214,7 +218,7 @@ ost2 = [
     [4,5]    
 ]
 #тут одного не хватает да и вцелом ничего не работает
-ost2_weights=[
+ost_edges_weights=[
     10,
     8,
     2,
