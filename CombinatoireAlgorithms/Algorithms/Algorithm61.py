@@ -138,6 +138,7 @@ class Graph:
         return result_split, count_of_subgraphs
 
     def search_ostav(self, points, weights):
+        """Возвращает пройденные графы через наименьший вес, без петлей"""
         if len(points) != len(weights):
             raise Exception("Unequal sizes!")
 
