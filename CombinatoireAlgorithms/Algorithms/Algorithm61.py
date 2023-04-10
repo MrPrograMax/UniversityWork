@@ -138,42 +138,33 @@ class Graph:
         return result_split, count_of_subgraphs
 
     def search_ostav(self, points, weights):
-        """Возвращает пройденные графы через наименьший вес, без петлей"""
-        
+        """Возвращает пройденные графы через наименьший вес, без петлей"""        
         if len(points) != len(weights):
             raise Exception("Unequal sizes!")
 
-        def cyclic_graph(edges, queue, index):
+        def cyclic_graph(edge, queue):
             #Переписать поиск из точке на список ребер и кидал фолс, когда находит отмеченную точку
-            return True
+            return False
 
-        def sort_edges_weight(points, weight):
-            """Синхронная сортировка ребер и весов"""
-            #соединим два списка специальной функцией zip
-            zipp = zip(points,weight)
-            #отсортируем, взяв первый элемент каждого списка как ключ
-            zip_sorted = sorted(zipp, key=lambda tup: tup[1])
+        #Синхронная сортировка ребер и их весов
+        weights, points = zip(*sorted(zip(weights, points)))
 
-            points = [x[0] for x in zip_sorted]
-            weight = [x[1] for x in zip_sorted]
-            
-            return points, weight
-
-        points, weights = sort_edges_weight(points, weights)
-
-        size = len(points)
+        size = len(weights)
         edges = []
     
-        for i in size:
-            edges.append(Edge(points[i], weights[i]))
+        for i in range(size):
+            #edges.append(Edge(points[i], weights[i]))
+            edges.append((points[i], weights[i]))
         
-        ostav_result = [edges[0]]
+        #ostav_result = [edges[0].weight]
+        ostav_result = [edges[0][0]]
+        
         count_edge = 0
         for i in range(1, size-1):
-            if not cyclic_graph(edges, ostav_result,  i):
-                ostav_result.append(edges[i])
+            #if not cyclic_graph(edges[i].edge, ostav_result):
+            if not cyclic_graph(edges[i][0], ostav_result):
+                ostav_result.append(edges[i][0])
                 count_edge += 1
-            # Пока что тут делать не понятно
 
         return ostav_result
 
@@ -268,4 +259,7 @@ ost_edges_weights = [
     1
 ]
 
-#print(Graph.search_ostav(ost_edges, ost_edges_weights))
+#weights, points = zip(*sorted(zip(ost_edges_weights, ost_edges)))
+#print(weights, points)
+graph = Graph
+print(graph.search_ostav(graph, ost_edges, ost_edges_weights))
