@@ -139,31 +139,41 @@ class Graph:
 
     def search_ostav(self, points, weights):
         """Возвращает пройденные графы через наименьший вес, без петлей"""
+        
         if len(points) != len(weights):
             raise Exception("Unequal sizes!")
 
-        def edge_min(edge):
-            min_edge = edge[0]
+        def cyclic_graph(edges, queue, index):
+            #Переписать поиск из точке на список ребер и кидал фолс, когда находит отмеченную точку
+            return True
 
-            for temp in edge:
-                if temp.weight < min_edge.weight:
-                    min_edge = temp
+        def sort_edges_weight(points, weight):
+            """Синхронная сортировка ребер и весов"""
+            #соединим два списка специальной функцией zip
+            zipp = zip(points,weight)
+            #отсортируем, взяв первый элемент каждого списка как ключ
+            zip_sorted = sorted(zipp, key=lambda tup: tup[1])
 
-            return min_edge
+            points = [x[0] for x in zip_sorted]
+            weight = [x[1] for x in zip_sorted]
+            
+            return points, weight
+
+        points, weights = sort_edges_weight(points, weights)
 
         size = len(points)
         edges = []
-
+    
         for i in size:
             edges.append(Edge(points[i], weights[i]))
-
-        min_edge = edge_min(edges)
-        ostav_result = []
-
-        for i in range(size-1):
+        
+        ostav_result = [edges[0]]
+        count_edge = 0
+        for i in range(1, size-1):
+            if not cyclic_graph(edges, ostav_result,  i):
+                ostav_result.append(edges[i])
+                count_edge += 1
             # Пока что тут делать не понятно
-            if min_edge == i:
-                pass
 
         return ostav_result
 
@@ -177,7 +187,7 @@ class Graph:
         print(f'Пройденные полностью подграфы(search_split) = {result}')
         print(f'Колличество графов = {count}\n')
 
-
+# region useless stuff
 LN = [
     [1, 2, 4],
     [0, 3, 4],
@@ -208,8 +218,8 @@ double_graph = [
 # graph = Graph(LN)
 # graph.print_all_info()
 
-dgraph = Graph(double_graph)
-dgraph.print_all_info()
+#dgraph = Graph(double_graph)
+#dgraph.print_all_info()
 
 # orgraph = Graph(orgraf_snake)
 # orgraph.print_all_info()
@@ -231,7 +241,9 @@ ostav_weight = [
     [9, 6, 4, 1],
     [8, 3, 1]
 ]
+#endregion
 
+#Точки соединений ребер
 ost_edges = [
     [0, 1],
     [0, 5],
@@ -243,7 +255,7 @@ ost_edges = [
     [4, 0],
     [4, 5]
 ]
-# тут одного не хватает да и вцелом ничего не работает
+# Веса соответствующих ребер
 ost_edges_weights = [
     10,
     8,
@@ -255,3 +267,5 @@ ost_edges_weights = [
     9,
     1
 ]
+
+#print(Graph.search_ostav(ost_edges, ost_edges_weights))
