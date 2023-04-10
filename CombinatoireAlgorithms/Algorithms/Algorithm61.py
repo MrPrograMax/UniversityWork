@@ -142,8 +142,40 @@ class Graph:
         if len(points) != len(weights):
             raise Exception("Unequal sizes!")
 
-        def cyclic_graph(edge, queue):
-            #Переписать поиск из точке на список ребер и кидал фолс, когда находит отмеченную точку
+        def cyclic_graph(new_edge, queue, index_point = 0, key_word='width'):
+            #Проверка на то, что при добавлении нового ребра(new_edge)
+            #Не будет создаваться цикл с текущами ребрами из queue
+            #Если известны связи все точки ребер edges
+            #Если он создатся, вернуть True
+            def get_links(new_edge, queue):
+                """Перевод из системы ребер в системы ссылок друзей у точек"""
+                links = []
+                #AAAAA где код
+                return links
+            
+            links = get_links(new_edge, queue)
+
+            if key_word == 'width':
+                queue = Queue()
+            elif key_word == 'depth':
+                queue = LifoQueue()
+            else:
+                raise Exception("Incorrect key word")
+
+            marked_poins = [0] * len(self.nodes)
+            queue.put(index_point)
+
+            self.marked_poins[index_point] = 1
+
+            while queue.qsize() != 0:
+                index = queue.get()
+                for i in links[index]:
+                    if marked_poins[i] == 0:
+                        queue.put(i)
+                        marked_poins[i] = 1
+                    else:
+                        return True
+
             return False
 
         #Синхронная сортировка ребер и их весов
