@@ -137,47 +137,62 @@ class Graph:
 
         return result_split, count_of_subgraphs
 
-    def search_ostav(self, points, weights):
-        """Возвращает пройденные графы через наименьший вес, без петлей"""        
-        if len(points) != len(weights):
-            raise Exception("Unequal sizes!")
+    def get_links(self, array, size):
+        """Перевод из системы ребер в системы ссылок друзей у точек"""
+        #АААААААААА ОНИ ВСЕ ССЫЛАЮТСЯ НА ПЕРВЫЙ ЭЛЕМЕНТ БРЕД ПОГАНЫЙ ПОЧЕМУ УЖЕ БАШКА НЕ РАБОТАЕТ Я НЕ ВЫВОЖУ
+        links = [[]] * size
 
-        def cyclic_graph(new_edge, queue, index_point = 0, key_word='width'):
-            #Проверка на то, что при добавлении нового ребра(new_edge)
-            #Не будет создаваться цикл с текущами ребрами из queue
-            #Если известны связи все точки ребер edges
-            #Если он создатся, вернуть True
-            def get_links(new_edge, queue):
-                """Перевод из системы ребер в системы ссылок друзей у точек"""
-                links = []
-                #AAAAA где код
-                return links
+        print(array, size)
+        print(f'links = {links}')
+        
+        for edge in array:
+            print(edge)
+            if edge != []:
+                links[edge[0]].append(edge[1])
+                links[edge[1]].append(edge[0])
+                break
+
+        return links
+
+    def cyclic_graph(self, new_edge, edge_list, index_point = 0, key_word='width'):
+        #Проверка на то, что при добавлении нового ребра(new_edge)
+        #Не будет создаваться цикл с текущами ребрами из queue
+        #Если известны связи все точки ребер edges
+        #Если он создатся, вернуть True
+        if key_word == 'width':
+            queue = Queue()
+        elif key_word == 'depth':
+            queue = LifoQueue()
+        else:
+            raise Exception("Incorrect key word")
             
-            links = get_links(new_edge, queue)
+        array  = [new_edge] + edge_list #объединяем массивы
+            
+        onedimension = [a for b in array for a in b] #делаем его одномерным    
+        size = max(onedimension) + 1
 
-            if key_word == 'width':
-                queue = Queue()
-            elif key_word == 'depth':
-                queue = LifoQueue()
-            else:
-                raise Exception("Incorrect key word")
+        links = self.get_links(array, size)
+        marked_poins = [0] * size
+            
+        queue.put(index_point)
+        marked_poins[index_point] = 1
 
-            marked_poins = [0] * len(self.nodes)
-            queue.put(index_point)
+        while queue.qsize() != 0:
+            index = queue.get()
+            for i in links[index]:
+                if marked_poins[i] == 0:
+                    queue.put(i)
+                    marked_poins[i] = 1
+                else:
+                    return True
 
-            self.marked_poins[index_point] = 1
+        return False
 
-            while queue.qsize() != 0:
-                index = queue.get()
-                for i in links[index]:
-                    if marked_poins[i] == 0:
-                        queue.put(i)
-                        marked_poins[i] = 1
-                    else:
-                        return True
-
-            return False
-
+    def search_ostav(self, points, weights):
+        """Возвращает пройденные подграфы через наименьший вес, без петлей"""        
+        if len(points) != len(weights):
+            raise Exception("Unequal sizes!")       
+        
         #Синхронная сортировка ребер и их весов
         weights, points = zip(*sorted(zip(weights, points)))
 
@@ -187,18 +202,26 @@ class Graph:
         for i in range(size):
             #edges.append(Edge(points[i], weights[i]))
             edges.append((points[i], weights[i]))
-        
+        print(edges)
+
         #ostav_result = [edges[0].weight]
         ostav_result = [edges[0][0]]
-        
         count_edge = 0
+        
         for i in range(1, size-1):
             #if not cyclic_graph(edges[i].edge, ostav_result):
-            if not cyclic_graph(edges[i][0], ostav_result):
+            
+            print(f'im {i} eges {edges[i][0]}')
+            
+            #если с новым ребром не образуется цикл, то добавляем в результат
+            #что-то я понял что кринжанул, насчет того, что список линков точек генерируется каждый раз,
+            #хотя стоит отправлять копию с добавленным ребром, и если ок то добавлять и в основной массив линков
+            print(edges[i][0], ostav_result)
+            if not self.cyclic_graph(edges[i][0], ostav_result):
                 ostav_result.append(edges[i][0])
                 count_edge += 1
 
-        return ostav_result
+        return ostav_result, count_edge
 
     def print_all_info(self, index_point=0, key_word='width'):
         print(f'Пройденный граф(search) = {self.search(index_point, key_word)}')
@@ -291,7 +314,5 @@ ost_edges_weights = [
     1
 ]
 
-#weights, points = zip(*sorted(zip(ost_edges_weights, ost_edges)))
-#print(weights, points)
-graph = Graph
-print(graph.search_ostav(graph, ost_edges, ost_edges_weights))
+print(Graph.get_links(Graph, ost_edges, 6))
+#print(Graph.search_ostav(Graph, ost_edges, ost_edges_weights))
