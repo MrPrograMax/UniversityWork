@@ -27,7 +27,7 @@ class Graph:
         for i in range(len(friends)):
             self.nodes.append(Node(values[i], friends[i]))
 
-        self.marked_poins = [0] * len(self.nodes)
+        self.marked_points = [0] * len(self.nodes)
 
     def search(self, index_point=0, key_word='width'):
         """
@@ -42,19 +42,19 @@ class Graph:
         else:
             raise Exception("Incorrect key word")
 
-        self.marked_poins = [0] * len(self.nodes)
+        self.marked_points = [0] * len(self.nodes)
         result = []
         queue.put(index_point)
 
-        self.marked_poins[index_point] = 1
+        self.marked_points[index_point] = 1
 
         while queue.qsize() != 0:
             index = queue.get()
             result.append(index)
             for i in self.nodes[index].links:
-                if self.marked_poins[i] == 0:
+                if self.marked_points[i] == 0:
                     queue.put(i)
-                    self.marked_poins[i] = 1
+                    self.marked_points[i] = 1
 
         return result
 
@@ -79,7 +79,7 @@ class Graph:
         
         # Заполняем пройденные точки первого обхода
         for i in range(size):
-            local_marked_points[i] += self.marked_poins[i]
+            local_marked_points[i] += self.marked_points[i]
 
         # Пока не будут пройдены все точки графа, цикл будет запускать поиск по порядку
         for i in range(size):
@@ -89,7 +89,7 @@ class Graph:
                 result_all += temp_search
                 # Добавление точек в уже пройденные
                 for i in range(size):
-                    local_marked_points[i] += self.marked_poins[i]
+                    local_marked_points[i] += self.marked_points[i]
 
                 count_of_subgraphs += 1
 
@@ -113,7 +113,7 @@ class Graph:
 
         # Заполняем пройденные точки первого обхода
         for i in range(size):
-            local_marked_points[i] += self.marked_poins[i]
+            local_marked_points[i] += self.marked_points[i]
 
         # Пока не будут пройдены все точки графа, цикл будет запускать поиск по порядку
         for i in range(size):
@@ -123,7 +123,7 @@ class Graph:
                 result_split.append(temp_search)
                 # Добавление точек в уже пройденные
                 for i in range(size):
-                    local_marked_points[i] += self.marked_poins[i]
+                    local_marked_points[i] += self.marked_points[i]
 
                 count_of_subgraphs += 1
 

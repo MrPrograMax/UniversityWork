@@ -35,7 +35,7 @@ class Graph:
         for i in range(len(friends)):
             self.nodes.append(Node(values[i], friends[i]))
 
-        self.marked_poins = [0] * len(self.nodes)
+        self.marked_points = [0] * len(self.nodes)
 
     def search(self, index_point=0, key_word='width'):
         """
@@ -50,19 +50,19 @@ class Graph:
         else:
             raise Exception("Incorrect key word")
 
-        self.marked_poins = [0] * len(self.nodes)
+        self.marked_points = [0] * len(self.nodes)
         result = []
         queue.put(index_point)
 
-        self.marked_poins[index_point] = 1
+        self.marked_points[index_point] = 1
 
         while queue.qsize() != 0:
             index = queue.get()
             result.append(index)
             for i in self.nodes[index].links:
-                if self.marked_poins[i] == 0:
+                if self.marked_points[i] == 0:
                     queue.put(i)
-                    self.marked_poins[i] = 1
+                    self.marked_points[i] = 1
 
         return result
 
@@ -87,7 +87,7 @@ class Graph:
 
         # Заполняем пройденные точки первого обхода
         for i in range(size):
-            local_marked_points[i] += self.marked_poins[i]
+            local_marked_points[i] += self.marked_points[i]
 
         # Пока не будут пройдены все точки графа, цикл будет запускать поиск по порядку
         for i in range(size):
@@ -97,7 +97,7 @@ class Graph:
                 result_all += temp_search
                 # Добавление точек в уже пройденные
                 for i in range(size):
-                    local_marked_points[i] += self.marked_poins[i]
+                    local_marked_points[i] += self.marked_points[i]
 
                 count_of_subgraphs += 1
 
@@ -121,7 +121,7 @@ class Graph:
 
         # Заполняем пройденные точки первого обхода
         for i in range(size):
-            local_marked_points[i] += self.marked_poins[i]
+            local_marked_points[i] += self.marked_points[i]
 
         # Пока не будут пройдены все точки графа, цикл будет запускать поиск по порядку
         for i in range(size):
@@ -131,7 +131,7 @@ class Graph:
                 result_split.append(temp_search)
                 # Добавление точек в уже пройденные
                 for i in range(size):
-                    local_marked_points[i] += self.marked_poins[i]
+                    local_marked_points[i] += self.marked_points[i]
 
                 count_of_subgraphs += 1
 
@@ -151,7 +151,7 @@ class Graph:
         for lin in links: lin.sort()
         return links
 
-    def cyclic_graph(self, new_edge, edge_list, index_point = 0, key_word='width'):
+    def cyclic_graph(self, array, index_point = 0, parent=-1, key_word='width'):
         """
             Проверка на то, что при добавлении нового ребра(new_edge)
             Не будет создаваться цикл с текущами ребрами из queue
@@ -164,43 +164,41 @@ class Graph:
             queue = LifoQueue()
         else:
             raise Exception("Incorrect key word")
-            
-        array  = [new_edge] + edge_list #объединяем массивы
-            
-        onedimension = [a for b in array for a in b] #делаем его одномерным    
-        size = max(onedimension) + 1
 
-        links = self.get_links(self, array, size)
+        #onedimension = [a for b in array for a in b] #делаем его одномерным    
+        size = max(a for b in array for a in b) + 1
+        links = self.get_links(array, size)
 
-        marked_poins = [0 for x in range(size)]
+        marked_points = [0 for x in range(size)]
+        
         for index_point in range(len(links)):
             if links[index_point] == []:
                 pass
             else:
                 queue.put(index_point)
-                marked_poins[index_point] = 1
+                marked_points[index_point] = 1
                 break
 
         print(f'links={links}')
         while queue.qsize() != 0:
             index = queue.get()
-            #print(index, marked_poins, queue)
+
             flag = True
 
             #кринж это вообще не работает он прыгает между двумя точками бесконечно
             #сразу останавливаясь на марках
 
             for i in links[index]:
-                print(f'{i} , {marked_poins}')
+                print(f'\ni={i}, index={index}\nMark={marked_points}')
                 
                 #попытка проверки на то что он ссылается на одно ребро, пока безуспешно
                 if [i,index] in array or [index, i] in array:
                     flag = False
                     pass
 
-                if marked_poins[i] == 0:
+                if marked_points[i] == 0:
                     queue.put(i)
-                    marked_poins[i] = 1
+                    marked_points[i] = 1
                 else:
                     return True
             if links[index] == []:
@@ -233,12 +231,12 @@ class Graph:
         for i in range(1, size-1):
             #if not cyclic_graph(edges[i].edge, ostav_result):
             
-            print(f'im {i} eges {edges[i][0]}')
+            print(f'im {i} edge {edges[i][0]}')
 
-            print(ostav_result + edges[i][0])
+            print(f'All edges {ostav_result + [edges[i][0]]}')
 
             #если с новым ребром не образуется цикл, то добавляем в результат
-            if not self.cyclic_graph(self, edges[i][0], ostav_result):
+            if not self.cyclic_graph(self, [edges[i][0]] + ostav_result):
                 ostav_result.append(edges[i][0])
                 count_edge += 1
 
