@@ -139,26 +139,25 @@ class Graph:
 
     def get_links(self, array, size):
         """Перевод из системы ребер в системы ссылок друзей у точек"""
-        #АААААААААА ОНИ ВСЕ ССЫЛАЮТСЯ НА ПЕРВЫЙ ЭЛЕМЕНТ БРЕД ПОГАНЫЙ ПОЧЕМУ УЖЕ БАШКА НЕ РАБОТАЕТ Я НЕ ВЫВОЖУ
-        links = [[]] * size
-
-        print(array, size)
-        print(f'links = {links}')
+       
+        links = [ [] for x in range(size) ]
         
         for edge in array:
-            print(edge)
+            #print(edge)
             if edge != []:
                 links[edge[0]].append(edge[1])
                 links[edge[1]].append(edge[0])
-                break
-
+                
+        for lin in links: lin.sort()
         return links
 
     def cyclic_graph(self, new_edge, edge_list, index_point = 0, key_word='width'):
-        #Проверка на то, что при добавлении нового ребра(new_edge)
-        #Не будет создаваться цикл с текущами ребрами из queue
-        #Если известны связи все точки ребер edges
-        #Если он создатся, вернуть True
+        """
+            Проверка на то, что при добавлении нового ребра(new_edge)
+            Не будет создаваться цикл с текущами ребрами из queue
+            Если известны связи все точки ребер edges
+            Если он создатся, вернуть True
+        """
         if key_word == 'width':
             queue = Queue()
         elif key_word == 'depth':
@@ -171,20 +170,41 @@ class Graph:
         onedimension = [a for b in array for a in b] #делаем его одномерным    
         size = max(onedimension) + 1
 
-        links = self.get_links(array, size)
-        marked_poins = [0] * size
-            
-        queue.put(index_point)
-        marked_poins[index_point] = 1
+        links = self.get_links(self, array, size)
 
+        marked_poins = [0 for x in range(size)]
+        for index_point in range(len(links)):
+            if links[index_point] == []:
+                pass
+            else:
+                queue.put(index_point)
+                marked_poins[index_point] = 1
+                break
+
+        print(f'links={links}')
         while queue.qsize() != 0:
             index = queue.get()
+            #print(index, marked_poins, queue)
+            flag = True
+
+            #кринж это вообще не работает он прыгает между двумя точками бесконечно
+            #сразу останавливаясь на марках
+
             for i in links[index]:
+                print(f'{i} , {marked_poins}')
+                
+                #попытка проверки на то что он ссылается на одно ребро, пока безуспешно
+                if [i,index] in array or [index, i] in array:
+                    flag = False
+                    pass
+
                 if marked_poins[i] == 0:
                     queue.put(i)
                     marked_poins[i] = 1
                 else:
                     return True
+            if links[index] == []:
+                queue.put(index+1)
 
         return False
 
@@ -202,7 +222,9 @@ class Graph:
         for i in range(size):
             #edges.append(Edge(points[i], weights[i]))
             edges.append((points[i], weights[i]))
+        
         print(edges)
+        print()
 
         #ostav_result = [edges[0].weight]
         ostav_result = [edges[0][0]]
@@ -212,14 +234,16 @@ class Graph:
             #if not cyclic_graph(edges[i].edge, ostav_result):
             
             print(f'im {i} eges {edges[i][0]}')
-            
+
+            print(ostav_result + edges[i][0])
+
             #если с новым ребром не образуется цикл, то добавляем в результат
-            #что-то я понял что кринжанул, насчет того, что список линков точек генерируется каждый раз,
-            #хотя стоит отправлять копию с добавленным ребром, и если ок то добавлять и в основной массив линков
-            print(edges[i][0], ostav_result)
-            if not self.cyclic_graph(edges[i][0], ostav_result):
+            if not self.cyclic_graph(self, edges[i][0], ostav_result):
                 ostav_result.append(edges[i][0])
                 count_edge += 1
+
+            print(ostav_result)
+            print()
 
         return ostav_result, count_edge
 
@@ -315,4 +339,5 @@ ost_edges_weights = [
 ]
 
 print(Graph.get_links(Graph, ost_edges, 6))
-#print(Graph.search_ostav(Graph, ost_edges, ost_edges_weights))
+print('\n')
+print(Graph.search_ostav(Graph, ost_edges, ost_edges_weights))
