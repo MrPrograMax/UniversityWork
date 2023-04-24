@@ -148,10 +148,12 @@ class Graph:
                 links[edge[0]].append(edge[1])
                 links[edge[1]].append(edge[0])
                 
-        for lin in links: lin.sort()
+        for lin in links:
+            lin.sort()
+
         return links
 
-    def cyclic_graph(self, array, index_point = 0, parent=-1, key_word='width'):
+    def cyclic_graph(self, array, index_point=0, marked_points = None, parent=-1, key_word='width'):
         """
             Проверка на то, что при добавлении нового ребра(new_edge)
             Не будет создаваться цикл с текущами ребрами из queue
@@ -164,13 +166,26 @@ class Graph:
             queue = LifoQueue()
         else:
             raise Exception("Incorrect key word")
+        print(f'array={array}')
 
-        #onedimension = [a for b in array for a in b] #делаем его одномерным    
-        size = max(a for b in array for a in b) + 1
-        links = self.get_links(array, size)
+        onedimension = [a for b in array for a in b] #делаем его одномерным    
+        print(onedimension)
+        size = max(onedimension) + 1
+        print(size)
+        links = self.get_links(self, array, size)
 
-        marked_points = [0 for x in range(size)]
-        
+        if not marked_points:
+            marked_points = [0 for x in range(size)]
+
+        marked_points[index_point] = 1
+
+        for w in links[index_point]:
+            if not marked_points[w]:
+                if self.cyclic_graph(array, w, marked_points, index_point):
+                    return True
+            elif w!= parent:
+                return True
+        """
         for index_point in range(len(links)):
             if links[index_point] == []:
                 pass
@@ -203,9 +218,9 @@ class Graph:
                     return True
             if links[index] == []:
                 queue.put(index+1)
-
+        """
         return False
-
+        
     def search_ostav(self, points, weights):
         """Возвращает пройденные подграфы через наименьший вес, без петлей"""        
         if len(points) != len(weights):
@@ -232,11 +247,12 @@ class Graph:
             #if not cyclic_graph(edges[i].edge, ostav_result):
             
             print(f'im {i} edge {edges[i][0]}')
-
+            
             print(f'All edges {ostav_result + [edges[i][0]]}')
-
+            temp_arr = [edges[i][0]] + ostav_result
+            print(f'temp = {temp_arr}')
             #если с новым ребром не образуется цикл, то добавляем в результат
-            if not self.cyclic_graph(self, [edges[i][0]] + ostav_result):
+            if not self.cyclic_graph(self, temp_arr):
                 ostav_result.append(edges[i][0])
                 count_edge += 1
 
