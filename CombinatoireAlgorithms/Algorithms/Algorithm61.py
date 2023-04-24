@@ -1,6 +1,33 @@
 """ Импорт структуры очередь и стек(лифо) """
 from queue import Queue, LifoQueue
 
+def isOnes(arr):
+    for a in arr:
+        if a == 0:
+            return False
+    return True
+
+def posZero(arr):
+    for i in range(len(arr)):
+        if arr[i] == 0:
+            return i
+    return -1
+
+def get_links(array, size):
+    """Перевод из системы ребер в системы ссылок друзей у точек"""
+
+    links = [ [] for x in range(size) ]
+
+    for edge in array:
+        #print(edge)
+        if edge != []:
+            links[edge[0]].append(edge[1])
+            links[edge[1]].append(edge[0])
+                
+    for lin in links:
+        lin.sort()
+
+    return links
 
 class Node:
     """Узел, содержит значение и ссылки"""
@@ -137,23 +164,8 @@ class Graph:
 
         return result_split, count_of_subgraphs
 
-    def get_links(self, array, size):
-        """Перевод из системы ребер в системы ссылок друзей у точек"""
-       
-        links = [ [] for x in range(size) ]
-        
-        for edge in array:
-            #print(edge)
-            if edge != []:
-                links[edge[0]].append(edge[1])
-                links[edge[1]].append(edge[0])
-                
-        for lin in links:
-            lin.sort()
-
-        return links
-
-    def cyclic_graph(self, array, index_point=0, marked_points = None, parent=-1, key_word='width'):
+      
+    def cyclic_graph(self, array, key_word='width'):
         """
             Проверка на то, что при добавлении нового ребра(new_edge)
             Не будет создаваться цикл с текущами ребрами из queue
@@ -161,64 +173,52 @@ class Graph:
             Если он создатся, вернуть True
         """
         if key_word == 'width':
-            queue = Queue()
+            q = Queue()
         elif key_word == 'depth':
-            queue = LifoQueue()
+            q = LifoQueue()
         else:
             raise Exception("Incorrect key word")
-        print(f'array={array}')
+        print(f'array in cyclic{array}')
 
-        onedimension = [a for b in array for a in b] #делаем его одномерным    
-        print(onedimension)
+        onedimension = [a for b in array for a in b] #делаем его одномерным
         size = max(onedimension) + 1
-        print(size)
-        links = self.get_links(self, array, size)
+        #print(f'size = {size}')
+        
+        marked_points = [0 for x in range(size)]
 
-        if not marked_points:
-            marked_points = [0 for x in range(size)]
+        links = get_links(array, size)
+        print(f'links in cyclic = {links}')
+        
+        for i in range(len(links)):
+            if links[i] == []:
+                marked_points[i] = 1
 
-        marked_points[index_point] = 1
+        print(marked_points)
+        
+        parent = -1
+        source = posZero(marked_points)
 
-        for w in links[index_point]:
-            if not marked_points[w]:
-                if self.cyclic_graph(self, array, w, marked_points, index_point):
+        marked_points[source] = 1
+        q.put((source , -1))
+
+        while not q.empty():
+            (v, parent) = q.get()
+            print(q.queue.__str__())
+            for u in links[v]:
+                if marked_points[u] == 0:
+                    marked_points[u] = 1
+                    q.put((u, v))
+                    
+                elif u != parent:
+                    print(f'u vertex {u}\nparent {parent}')
+                    print(f'end markers(True) = {marked_points}')
                     return True
-            elif w!= parent:
-                return True
-        """
-        for index_point in range(len(links)):
-            if links[index_point] == []:
-                pass
-            else:
-                queue.put(index_point)
-                marked_points[index_point] = 1
-                break
+            if q.empty() and not isOnes(marked_points):
+                source = posZero(marked_points)
+                if source != -1:
+                    q.put((source, -1))
 
-        print(f'links={links}')
-        while queue.qsize() != 0:
-            index = queue.get()
-
-            flag = True
-
-            #кринж это вообще не работает он прыгает между двумя точками бесконечно
-            #сразу останавливаясь на марках
-
-            for i in links[index]:
-                print(f'\ni={i}, index={index}\nMark={marked_points}')
-                
-                #попытка проверки на то что он ссылается на одно ребро, пока безуспешно
-                if [i,index] in array or [index, i] in array:
-                    flag = False
-                    pass
-
-                if marked_points[i] == 0:
-                    queue.put(i)
-                    marked_points[i] = 1
-                else:
-                    return True
-            if links[index] == []:
-                queue.put(index+1)
-        """
+        print(f'end markers(False) = {marked_points}')                
         return False
         
     def search_ostav(self, points, weights):
@@ -248,15 +248,15 @@ class Graph:
             
             print(f'im {i} edge {edges[i][0]}')
             
-            print(f'All edges {ostav_result + [edges[i][0]]}')
+            #print(f'All edges {ostav_result + [edges[i][0]]}')
             temp_arr = [edges[i][0]] + ostav_result
-            print(f'temp = {temp_arr}')
+            #print(f'temp = {temp_arr}')
             #если с новым ребром не образуется цикл, то добавляем в результат
             if not self.cyclic_graph(self, temp_arr):
                 ostav_result.append(edges[i][0])
                 count_edge += 1
 
-            print(ostav_result)
+            print(f'res[{i}] = {ostav_result}')
             print()
 
         return ostav_result, count_edge
@@ -352,6 +352,6 @@ ost_edges_weights = [
     1
 ]
 
-print(Graph.get_links(Graph, ost_edges, 6))
+print(get_links(ost_edges, 6))
 print('\n')
 print(Graph.search_ostav(Graph, ost_edges, ost_edges_weights))
