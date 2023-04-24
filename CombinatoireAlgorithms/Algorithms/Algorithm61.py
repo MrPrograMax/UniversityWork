@@ -181,7 +181,7 @@ class Graph:
 
         for w in links[index_point]:
             if not marked_points[w]:
-                if self.cyclic_graph(array, w, marked_points, index_point):
+                if self.cyclic_graph(self, array, w, marked_points, index_point):
                     return True
             elif w!= parent:
                 return True
