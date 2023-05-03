@@ -53,6 +53,41 @@ def Dijkstra_alg(graph, begin, end):
     for i in range(k-1, -1, -1):
         print(int(path[i]), sep = "->")
 
+def Floid_alg(graph, begin, end):
+    distance = graph.copy()
+    n = len(graph[0])
+    H = np.zeros((n, n))
+    k, count = 0, 0
+    for i in range(n):
+        for j in range(n):
+            if graph[i][j] != 1000:
+                H[i][j] = i
+    while True:
+        k += 1
+        for i in range(n):
+            for j in range(n):
+                if i != k and j != k:
+                    distance[i][j] = min(distance[i][j], (distance[i][k] + distance[k][j]))
+                if distance[i][k] + distance[k][j] < distance[i][j]:
+                    H[i][j] = H[k][j]
+
+        for i in range(n):
+            if distance[i][i] < 0:
+                print("Решения нет")
+                break
+            if distance[i][i] >= 0:
+                count += 1
+
+        if count == len(distance) and k == n-1:
+            break
+        count = 0
+
+    q = end
+    print(q)
+    while q != begin:
+        q = H[begin][q]
+        print(q)
+
 A = np.array([
     [0, 2, 1, 3, sys.maxsize, 9, sys.maxsize, sys.maxsize],
     [sys.maxsize, 0, sys.maxsize, 3, 5, sys.maxsize, sys.maxsize, sys.maxsize],
@@ -63,5 +98,16 @@ A = np.array([
     [sys.maxsize, sys.maxsize, sys.maxsize, sys.maxsize, sys.maxsize,sys.maxsize, 0, 1],
     [sys.maxsize, sys.maxsize, sys.maxsize, sys.maxsize, sys.maxsize,sys.maxsize,sys.maxsize , 0]
 ])
+B = np.array([
+    [0, 2, 1, 3,  1000, 9,  1000,  1000],
+    [ 1000, 0,  1000, 3, 5,  1000,  1000,  1000],
+    [ 1000,  1000, 0,  1000, 1, 7,  1000,  1000],
+    [ 1000,  1000,  1000, 0, 2, 2,  1000,  1000],
+    [ 1000,  1000,  1000,  1000, 0,  1000, 3,  1000],
+    [ 1000,  1000,  1000,  1000,  1000, 0, 2, 2],
+    [ 1000,  1000,  1000,  1000,  1000, 1000, 0, 1],
+    [  1000,  1000,  1000,  1000,  1000, 1000, 1000 , 0]
+])
 
 Dijkstra_alg(A, 0, 7)
+Floid_alg(B, 0, 7)
