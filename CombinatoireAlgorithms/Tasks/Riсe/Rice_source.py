@@ -1,5 +1,4 @@
 '''Схема мелиорации рисовых полей'''
-
 from queue import Queue, LifoQueue
 
 
@@ -21,12 +20,11 @@ def pos_zero(array) -> int:
             return i
     return -1
 
-
 def get_links(array, size):
     '''Перевод из системы ребер в системы ссылок друзей у точек
     '''
 
-    links = [[] for x in range(size)]
+    links = [ [] for x in range(size) ]
 
     for edge in array:
         if edge != []:
@@ -37,7 +35,6 @@ def get_links(array, size):
         lin.sort()
 
     return links
-
 
 def cyclic_graph(array, key_word='width') -> bool:
     """ Проверка на то, что при добавлении нового ребра(new_edge)
@@ -140,16 +137,16 @@ rice_edges = {
     19: [9, 10]
 }
 rice_weights = {
-    0: 5,
-    1: 3,
-    2: 10,
-    3: 10,
-    4: 5,
-    5: 8,
-    6: 10,
-    7: 2,
-    8: 1,
-    9: 1,
+    0 : 5,
+    1 : 3,
+    2 : 10,
+    3 : 10,
+    4 : 5,
+    5 : 8,
+    6 : 10,
+    7 : 2,
+    8 : 1,
+    9 : 1,
     10: 1,
     11: 2,
     12: 10,
