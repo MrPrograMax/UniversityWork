@@ -24,7 +24,7 @@ def Dijkstra_alg(graph, begin, end):
             if not visited[k] and graph[index][k] != 0 and distance[index] != np.inf and (distance[index] + graph[index][k] < distance[k]):
                 distance[k] = distance[index] + graph[index][k] # Заменяем значение метки
 
-    print(f'Длина пути из {begin} вершины до остальных')
+    print(f'Длина пути из {begin} вершины до остальных c помощью алгоритма Дейкстры')
     for i in range(n):
         if distance[i] != np.inf:
             print(f'Из {begin} в {i} = {distance[i]}')
@@ -51,23 +51,25 @@ def Dijkstra_alg(graph, begin, end):
     print(f'Путь минимальной длины из {begin} в {m}')
     for i in range(k-1, -1, -1):
         print(int(path[i]), sep = "->")
+    print(m)
 
-def Floid_alg(graph, begin, end):
+def Floid_alg(graph, begin:int, end:int):
     distance = graph.copy()
     n = len(graph[0])
     H = np.zeros((n, n))
     k, count = 0, 0
     for i in range(n):
         for j in range(n):
-            if graph[i][j] != 1000:
+            if graph[i][j] != np.inf:
                 H[i][j] = i
     while True:
         k += 1
         for i in range(n):
             for j in range(n):
-                if i != k and j != k:
-                    distance[i][j] = min(distance[i][j], (distance[i][k] + distance[k][j]))
+                #if i != k and j != k:
+                  #  distance[i][j] = min(distance[i][j], (distance[i][k] + distance[k][j]))
                 if distance[i][k] + distance[k][j] < distance[i][j]:
+                    distance[i][j] = distance[i][k] + distance[k][j]
                     H[i][j] = H[k][j]
 
         for i in range(n):
@@ -81,11 +83,21 @@ def Floid_alg(graph, begin, end):
             break
         count = 0
 
-    q = end
+    print(f'Длина пути из {begin} вершины до остальных с помощью алгоритма Флойда')
+    for i in range(n):
+        if distance[begin][i] != np.inf:
+            print(f'Из {begin} в {i} = {distance[begin][i]}')
+        else:
+            print(f'Из {begin} в {i} маршрут недоступен')
+
+    '''
+    q = int(begin)
     print(q)
-    while q != begin:
-        q = H[begin][q]
+    while q != end:
         print(q)
+        q = int(H[q][end])
+    print(end)
+    '''
 
 inf = np.inf
 A = np.array([
@@ -98,16 +110,7 @@ A = np.array([
     [inf, inf, inf, inf, inf, inf, 0, 1],
     [inf, inf, inf, inf, inf, inf, inf, 0]
 ])
-B = np.array([
-    [0, 2, 1, 3,  1000, 9,  1000,  1000],
-    [ 1000, 0,  1000, 3, 5,  1000,  1000,  1000],
-    [ 1000,  1000, 0,  1000, 1, 7,  1000,  1000],
-    [ 1000,  1000,  1000, 0, 2, 2,  1000,  1000],
-    [ 1000,  1000,  1000,  1000, 0,  1000, 3,  1000],
-    [ 1000,  1000,  1000,  1000,  1000, 0, 2, 2],
-    [ 1000,  1000,  1000,  1000,  1000, 1000, 0, 1],
-    [  1000,  1000,  1000,  1000,  1000, 1000, 1000 , 0]
-])
+
 
 Dijkstra_alg(A, 0, 7)
 Floid_alg(A, 0, 7)
