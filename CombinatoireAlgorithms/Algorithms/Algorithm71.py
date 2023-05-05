@@ -87,16 +87,16 @@ def Floid_alg(graph, begin, end):
         q = H[begin][q]
         print(q)
 
-∞ = np.inf
+inf = np.inf
 A = np.array([
-    [0, 2, 1, 3, ∞, 9, ∞, ∞],
-    [∞, 0, ∞, 3, 5, ∞, ∞, ∞],
-    [∞, ∞, 0, ∞, 1, 7, ∞, ∞],
-    [∞, ∞, ∞, 0, 2, 2, ∞, ∞],
-    [∞, ∞, ∞, ∞, 0, ∞, 3, ∞],
-    [∞, ∞, ∞, ∞, ∞, 0, 2, 2],
-    [∞, ∞, ∞, ∞, ∞, ∞, 0, 1],
-    [∞, ∞, ∞, ∞, ∞, ∞, ∞, 0]
+    [0, 2, 1, 3, inf, 9, inf, inf],
+    [inf, 0, inf, 3, 5, inf, inf, inf],
+    [inf, inf, 0, inf, 1, 7, inf, inf],
+    [inf, inf, inf, 0, 2, 2, inf, inf],
+    [inf, inf, inf, inf, 0, inf, 3, inf],
+    [inf, inf, inf, inf, inf, 0, 2, 2],
+    [inf, inf, inf, inf, inf, inf, 0, 1],
+    [inf, inf, inf, inf, inf, inf, inf, 0]
 ])
 B = np.array([
     [0, 2, 1, 3,  1000, 9,  1000,  1000],
@@ -110,4 +110,4 @@ B = np.array([
 ])
 
 Dijkstra_alg(A, 0, 7)
-Floid_alg(B, 0, 7)
+Floid_alg(A, 0, 7)
