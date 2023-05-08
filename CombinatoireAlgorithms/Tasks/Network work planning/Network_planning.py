@@ -2,14 +2,16 @@
 import numpy as np
 
 
-def floyd_algorithm(W, begin: int = 0, end: int = None) -> tuple:
-    """ Возвращает путь, дистанцию
+def floyd(W, start_point: int = 0, end_point: int = None) -> tuple:
+    """ Возвращает минимальный путь и дистанцию 
+        returning (path:list, distance:int)
+
         W - Начальные веса
         D - Дистанции
         H - Таблица кратчайших предшестующих точек
     """
-    if end is None:
-        end = W[0].size-1
+    if end_point is None:
+        end_point = W[0].size-1
 
     D = W.copy()
     n = len(W[0])
@@ -44,14 +46,70 @@ def floyd_algorithm(W, begin: int = 0, end: int = None) -> tuple:
     # 7.4 Нахождение пути из Н
 
     if error_flag is False:
-        result_chain = [end]
-        node = end
+        print(H)
+        point = end_point
+        result_chain = [point]
 
-        while node != begin:
-            node = int(H[begin][node])
-            result_chain.append(node)
+        while point != start_point:
+            point = int(H[start_point][point])
+            result_chain.append(point)
 
-        return np.flip(result_chain), D[begin, end]
+        return np.flip(result_chain), D[start_point, end_point]
+
+    else:
+        print("Решения нет")
+        return None, None
+
+def floyd_critical(W, start_point: int = 0, end_point: int = None) -> tuple:
+    """ Возвращает критический путь, дистанцию
+        W - Начальные веса
+        D - Дистанции
+        H - Таблица кратчайших предшестующих точек
+    """
+    if end_point is None:
+        end_point = W[0].size-1
+
+    D = W.copy()
+    n = len(W[0])
+    H = np.zeros((n, n))
+
+    error_flag = False
+    # 1 Инициализация H
+    for i in range(n):
+        for j in range(n):
+            if W[i][j] != np.inf and i != j:
+                H[i][j] = i
+
+    k = -1
+    while True:
+        k += 1
+        # 2 Построение Н, D
+        for i in range(n):
+            for j in range(n):
+                if k not in (i, j):
+                    D[i][j] = max(D[i][j], D[i][k] + D[k][j])
+
+                    if D[i][k] + D[k][j] >= D[i][j]:
+                        H[i][j] = H[k][j]
+
+        # 3 Проверка на окончание
+        for i in range(n):
+            if D[i][i] < 0:
+                error_flag = True
+                break
+        if k == n-1:
+            break
+    # 7.4 Нахождение пути из Н
+
+    if error_flag is False:
+        result_chain = [end_point]
+        point = end_point
+
+        while point != start_point:
+            point = int(H[start_point][point])
+            result_chain.append(point)
+
+        return np.flip(result_chain), D[start_point, end_point]
 
     else:
         print("Решения нет")
@@ -77,12 +135,28 @@ network_graph = {
     13: [inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf,   0]
 }
 network_array = np.array(list(network_graph.values()))
+n = network_array[0].size
 
-chain, distance = floyd_algorithm(network_array)
+for i in range(n-1):
+    for j in range(i+1, n):
+        print(f'Минимальный путь {i} -> {j} с помощью алгоритма Флойда')
+        chain, distance = floyd(network_array, i, j)
 
-print(f'Минимальный путь {0} -> {network_array[0].size-1} с помощью алгоритма Флойда')
-print(" -> ".join(chain.astype(str)))
-print('Длина пути = ' + str(distance)
-        if distance != np.inf
-        else 'Маршрут недоступен')
-        
+        if chain is None:
+            print("Пути нет")
+        else:
+            print(" -> ".join(chain.astype(str)))
+            print('Длина пути = ' + str(distance)
+                    if distance != np.inf
+                    else 'Маршрут недоступен')
+        print()
+
+print(f'\nКритический путь {0} -> {n} с помощью алгоритма Флойда')
+chain, distance = floyd_critical(network_array)
+if chain is None:
+    print("Пути нет")
+else:
+    print(" -> ".join(chain.astype(str)))
+    print('Длина пути = ' + str(distance)
+            if distance != np.inf
+            else 'Маршрут недоступен')
