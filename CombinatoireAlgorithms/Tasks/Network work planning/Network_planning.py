@@ -31,10 +31,11 @@ def floyd(W, start_point: int = 0, end_point: int = None) -> tuple:
         for i in range(n):
             for j in range(n):
                 if k not in (i, j):
-                    D[i][j] = min(D[i][j], D[i][k] + D[k][j])
+                    if D[i][k] != np.inf and D[k][j] != np.inf:
+                        D[i][j] = min(D[i][j], D[i][k] + D[k][j])
 
-                    if D[i][k] + D[k][j] <= D[i][j]:
-                        H[i][j] = H[k][j]
+                        if D[i][k] + D[k][j] <= D[i][j]:
+                            H[i][j] = H[k][j]
 
         # 3 Проверка на окончание
         for i in range(n):
@@ -45,13 +46,13 @@ def floyd(W, start_point: int = 0, end_point: int = None) -> tuple:
             break
     # 7.4 Нахождение пути из Н
 
-    if error_flag is False:
-        print(H)
+    if error_flag is False and D[start_point, end_point] != np.inf:
         point = end_point
         result_chain = [point]
 
         while point != start_point:
             point = int(H[start_point][point])
+            
             result_chain.append(point)
 
         return np.flip(result_chain), D[start_point, end_point]
@@ -134,29 +135,23 @@ network_graph = {
     12: [inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf,   0,   7],
     13: [inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf,   0]
 }
+
+def print_floyd(graph, start_point = 0, end_point=None):
+    if end_point is None:
+        end_point = graph[0].size - 1
+
+    print(f'Минимальный путь {start_point} -> {end_point} с помощью алгоритма Флойда')
+    chain, distance = floyd(graph, start_point, end_point)
+
+    if chain is None:
+        print("Пути нет")
+    else:
+        print(" -> ".join(chain.astype(str)))
+        print('Длина пути = ' + str(distance)
+                if distance != np.inf
+                else 'Маршрут недоступен')
+    print()
+
 network_array = np.array(list(network_graph.values()))
-n = network_array[0].size
 
-for i in range(n-1):
-    for j in range(i+1, n):
-        print(f'Минимальный путь {i} -> {j} с помощью алгоритма Флойда')
-        chain, distance = floyd(network_array, i, j)
-
-        if chain is None:
-            print("Пути нет")
-        else:
-            print(" -> ".join(chain.astype(str)))
-            print('Длина пути = ' + str(distance)
-                    if distance != np.inf
-                    else 'Маршрут недоступен')
-        print()
-
-print(f'\nКритический путь {0} -> {n} с помощью алгоритма Флойда')
-chain, distance = floyd_critical(network_array)
-if chain is None:
-    print("Пути нет")
-else:
-    print(" -> ".join(chain.astype(str)))
-    print('Длина пути = ' + str(distance)
-            if distance != np.inf
-            else 'Маршрут недоступен')
+print_floyd(network_array)
