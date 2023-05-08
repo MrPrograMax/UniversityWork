@@ -24,12 +24,12 @@ def Dijkstra_alg(graph, begin, end):
             if not visited[k] and graph[index][k] != 0 and distance[index] != np.inf and (distance[index] + graph[index][k] < distance[k]):
                 distance[k] = distance[index] + graph[index][k] # Заменяем значение метки
 
-    print(f'Длина пути из {begin} вершины до остальных c помощью алгоритма Дейкстры')
-    for i in range(n):
-        if distance[i] != np.inf:
-            print(f'Из {begin} в {i} = {distance[i]}')
-        else:
-            print(f'Из {begin} в {i} маршрут недоступен')
+    print('Длина пути = ', end = "")
+   
+    if distance[end] != np.inf:
+        print(distance[end])
+    else:
+        print('маршрут недоступен')
 
     if distance[end] == np.inf:
         return
@@ -48,56 +48,69 @@ def Dijkstra_alg(graph, begin, end):
                     path[k] = i # Записываем ее в массив
                     k += 1
 
-    print(f'Путь минимальной длины из {begin} в {m}')
+    print(f'Минимальной путь из {begin} в {m} с помощью алгоритма Дийкстры')
     for i in range(k-1, -1, -1):
-        print(int(path[i]), sep = "->")
+        print(int(path[i]), end = " -> ")
     print(m)
 
-def Floid_alg(graph, begin:int, end:int):
-    distance = graph.copy()
-    n = len(graph[0])
+def floyd(W, start_point: int = 0, end_point: int = None) -> tuple:
+    """ Возвращает минимальный путь и дистанцию 
+        returning (path:list, distance:int)
+
+        W - Начальные веса
+        D - Дистанции
+        H - Таблица кратчайших предшестующих точек
+    """
+    if end_point is None:
+        end_point = W[0].size-1
+
+    D = W.copy()
+    n = len(W[0])
     H = np.zeros((n, n))
-    k, count = 0, 0
+
+    error_flag = False
+    # 1 Инициализация H
     for i in range(n):
         for j in range(n):
-            if graph[i][j] != np.inf:
+            if W[i][j] != np.inf and i != j:
                 H[i][j] = i
+
+    k = -1
     while True:
         k += 1
+        # 2 Построение Н, D
         for i in range(n):
             for j in range(n):
-                #if i != k and j != k:
-                  #  distance[i][j] = min(distance[i][j], (distance[i][k] + distance[k][j]))
-                if distance[i][k] + distance[k][j] < distance[i][j]:
-                    distance[i][j] = distance[i][k] + distance[k][j]
-                    H[i][j] = H[k][j]
+                if k not in (i, j):
+                    if D[i][k] != np.inf and D[k][j] != np.inf:
+                        D[i][j] = min(D[i][j], D[i][k] + D[k][j])
 
+                        if D[i][k] + D[k][j] <= D[i][j]:
+                            H[i][j] = H[k][j]
+
+        # 3 Проверка на окончание
         for i in range(n):
-            if distance[i][i] < 0:
-                print("Решения нет")
+            if D[i][i] < 0:
+                error_flag = True
                 break
-            if distance[i][i] >= 0:
-                count += 1
-
-        if count == len(distance) and k == n-1:
+        if k == n-1:
             break
-        count = 0
+    # 7.4 Нахождение пути из Н
 
-    print(f'Длина пути из {begin} вершины до остальных с помощью алгоритма Флойда')
-    for i in range(n):
-        if distance[begin][i] != np.inf:
-            print(f'Из {begin} в {i} = {distance[begin][i]}')
-        else:
-            print(f'Из {begin} в {i} маршрут недоступен')
+    if error_flag is False and D[start_point, end_point] != np.inf:
+        point = end_point
+        result_chain = [point]
 
-    '''
-    q = int(begin)
-    print(q)
-    while q != end:
-        print(q)
-        q = int(H[q][end])
-    print(end)
-    '''
+        while point != start_point:
+            point = int(H[start_point][point])
+            result_chain.append(point)
+
+        return np.flip(result_chain), D[start_point, end_point]
+
+    else:
+        print("Решения нет")
+        return None, None
+
 
 inf = np.inf
 A = np.array([
@@ -113,4 +126,14 @@ A = np.array([
 
 
 Dijkstra_alg(A, 0, 7)
-Floid_alg(A, 0, 7)
+
+print(f'Минимальный путь {0} -> {7} с помощью алгоритма Флойда')
+chain, distance = floyd(A)
+
+if chain is None:
+    print("Пути нет")
+else:
+    print(" -> ".join(chain.astype(str)))
+    print('Длина пути = ' + str(distance)
+            if distance != np.inf
+            else 'Маршрут недоступен')
