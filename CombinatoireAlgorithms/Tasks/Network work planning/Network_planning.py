@@ -52,7 +52,7 @@ def floyd(W, start_point: int = 0, end_point: int = None) -> tuple:
 
         while point != start_point:
             point = int(H[start_point][point])
-            
+
             result_chain.append(point)
 
         return np.flip(result_chain), D[start_point, end_point]
@@ -62,7 +62,9 @@ def floyd(W, start_point: int = 0, end_point: int = None) -> tuple:
         return None, None
 
 def floyd_critical(W, start_point: int = 0, end_point: int = None) -> tuple:
-    """ Возвращает критический путь, дистанцию
+    """ Возвращает минимальный путь и дистанцию 
+        returning (path:list, distance:int)
+
         W - Начальные веса
         D - Дистанции
         H - Таблица кратчайших предшестующих точек
@@ -88,10 +90,11 @@ def floyd_critical(W, start_point: int = 0, end_point: int = None) -> tuple:
         for i in range(n):
             for j in range(n):
                 if k not in (i, j):
-                    D[i][j] = max(D[i][j], D[i][k] + D[k][j])
+                    if D[i][k] != np.inf and D[k][j] != np.inf:
+                        D[i][j] = min(D[i][j], D[i][k] + D[k][j])
 
-                    if D[i][k] + D[k][j] >= D[i][j]:
-                        H[i][j] = H[k][j]
+                        if D[i][k] + D[k][j] <= D[i][j]:
+                            H[i][j] = H[k][j]
 
         # 3 Проверка на окончание
         for i in range(n):
@@ -102,12 +105,13 @@ def floyd_critical(W, start_point: int = 0, end_point: int = None) -> tuple:
             break
     # 7.4 Нахождение пути из Н
 
-    if error_flag is False:
-        result_chain = [end_point]
+    if error_flag is False and D[start_point, end_point] != np.inf:
         point = end_point
+        result_chain = [point]
 
         while point != start_point:
             point = int(H[start_point][point])
+
             result_chain.append(point)
 
         return np.flip(result_chain), D[start_point, end_point]
@@ -116,6 +120,25 @@ def floyd_critical(W, start_point: int = 0, end_point: int = None) -> tuple:
         print("Решения нет")
         return None, None
 
+def print_chain_distance(graph, start_point = 0, end_point=None, critical:bool=False):
+    if end_point is None:
+        end_point = graph[0].size - 1
+
+    print('Минимальный' if critical is False else 'Критический', end="")
+    print(f' путь {start_point} -> {end_point} с помощью алгоритма Флойда')
+
+    if(critical is False):
+        chain, distance = floyd(graph, start_point, end_point)
+    else:
+        chain, distance = floyd_critical(graph, start_point, end_point)
+
+    if chain is None:
+        print("Пути нет")
+    else:
+        print(" -> ".join(chain.astype(str)))
+        print('Длина пути = ' + str(distance)
+                if distance != np.inf
+                else 'Маршрут недоступен')
 
 inf = np.inf
 network_graph = {
@@ -136,22 +159,8 @@ network_graph = {
     13: [inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf,   0]
 }
 
-def print_floyd(graph, start_point = 0, end_point=None):
-    if end_point is None:
-        end_point = graph[0].size - 1
-
-    print(f'Минимальный путь {start_point} -> {end_point} с помощью алгоритма Флойда')
-    chain, distance = floyd(graph, start_point, end_point)
-
-    if chain is None:
-        print("Пути нет")
-    else:
-        print(" -> ".join(chain.astype(str)))
-        print('Длина пути = ' + str(distance)
-                if distance != np.inf
-                else 'Маршрут недоступен')
-    print()
-
 network_array = np.array(list(network_graph.values()))
 
-print_floyd(network_array)
+print_chain_distance(network_array)
+print()
+print_chain_distance(network_array, critical=True)
