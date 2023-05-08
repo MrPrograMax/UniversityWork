@@ -24,9 +24,7 @@ def floyd(W, start_point: int = 0, end_point: int = None) -> tuple:
             if W[i][j] != np.inf and i != j:
                 H[i][j] = i
 
-    k = -1
-    while True:
-        k += 1
+    for k in range(n):
         # 2 Построение Н, D
         for i in range(n):
             for j in range(n):
@@ -42,8 +40,7 @@ def floyd(W, start_point: int = 0, end_point: int = None) -> tuple:
             if D[i][i] < 0:
                 error_flag = True
                 break
-        if k == n-1:
-            break
+
     # 7.4 Нахождение пути из Н
 
     if error_flag is False and D[start_point, end_point] != np.inf:
