@@ -160,3 +160,4 @@ else:
     print('Длина пути = ' + str(distance)
             if distance != np.inf
             else 'Маршрут недоступен')
+#AAAAAAAAAAAA 
