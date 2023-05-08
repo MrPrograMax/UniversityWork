@@ -58,6 +58,16 @@ def floyd(W, start_point: int = 0, end_point: int = None) -> tuple:
         print("Решения нет")
         return None, None
 
+def negative_array(array:np.ndarray):
+    n = len(array[0])
+
+    for i in range(n):
+        for j in range(n):
+            if array[i][j] != inf:
+                array[i][j] *= -1
+    
+    return array
+
 def floyd_critical(W, start_point: int = 0, end_point: int = None) -> tuple:
     """ Возвращает минимальный путь и дистанцию 
         returning (path:list, distance:int)
@@ -69,7 +79,7 @@ def floyd_critical(W, start_point: int = 0, end_point: int = None) -> tuple:
     if end_point is None:
         end_point = W[0].size-1
 
-    D = W.copy()
+    D = negative_array(W.copy())
     n = len(W[0])
     H = np.zeros((n, n))
 
@@ -77,7 +87,7 @@ def floyd_critical(W, start_point: int = 0, end_point: int = None) -> tuple:
     # 1 Инициализация H
     for i in range(n):
         for j in range(n):
-            if W[i][j] != np.inf and i != j:
+            if W[i][j] != -np.inf and i != j:
                 H[i][j] = i
 
     for k in range(n):
@@ -93,7 +103,7 @@ def floyd_critical(W, start_point: int = 0, end_point: int = None) -> tuple:
 
         # 3 Проверка на окончание
         for i in range(n):
-            if D[i][i] < 0:
+            if D[i][i] > 0:
                 error_flag = True
                 break
 
@@ -107,8 +117,7 @@ def floyd_critical(W, start_point: int = 0, end_point: int = None) -> tuple:
             point = int(H[start_point][point])
 
             result_chain.append(point)
-
-        return np.flip(result_chain), D[start_point, end_point]
+        return np.flip(result_chain), -1 * D[start_point, end_point]
 
     else:
         print("Решения нет")
