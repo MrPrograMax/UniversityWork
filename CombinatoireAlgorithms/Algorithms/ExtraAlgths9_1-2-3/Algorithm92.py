@@ -15,4 +15,5 @@ def wst(k:int, delta, probs:list):
             probs[i - 1], probs[i] = probs[i], probs[i - 1]
         else:
             break
+        
     return i
