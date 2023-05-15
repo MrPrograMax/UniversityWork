@@ -23,6 +23,5 @@ def haffman(P:list, k : int = 2):
         L[1] = 1
     else:
         delta = P[k-1] + P[k]
-        wst(k, delta)
-        j = 1 #например
+        j =  wst(k, delta, P)
         down(k, j)
