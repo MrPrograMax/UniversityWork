@@ -3,8 +3,8 @@
 """
 import numpy as np
 
-from Algorithm92 import wst
-from Algorithm93 import down
+from Algorithm_wst_92 import wst
+from Algorithm_down_93 import down
 
 p1 = [0.4, 0.2, 0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]
 p2 = [0.3, 0.2, 0.2, 0.2, 0.1]
