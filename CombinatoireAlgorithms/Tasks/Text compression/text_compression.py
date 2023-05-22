@@ -83,10 +83,11 @@ alph = set(POEM[:])
 len_alph = len(alph)
 
 dic_letters = {letter: POEM.count(letter)/LENGTH_POEM for letter in alph}
+dic_letters = dict(sorted(dic_letters.items(), key= lambda x : x[1]))
 print(dic_letters)
 
 letter_probability = np.array(list(dic_letters.values()))
-letter_probability.sort()
+
 print(letter_probability)
 
 print(sum(letter_probability))
