@@ -1,7 +1,9 @@
-def down(k:int, j:int, C, L):
+def down(k:int, j:int, C, L) -> tuple:
     """
     k - dimension and iterations
     j - insertion pointer
+    C - massive n*n
+    L - length set
     return C,L
     Расщипляет j строку
     """
@@ -11,17 +13,17 @@ def down(k:int, j:int, C, L):
 
     #2
     for i in range(j, k-2):
-        C[i, :] = C[i+1, :]
-        L[i]= L[i + 1]
+        C[i, :] = C[i + 1, :]
+        L[i]  = L[i + 1]
 
     #3
-    C[k-1, : ] = beta
-    C[ k , : ] = beta
+    C[k - 1, : ] = beta
+    C[  k  , : ] = beta
 
     #4
-    C[k-1, length + 1] = 0
-    C[k  , length + 1] = 1
-    L[k-1] = length + 1
-    L[ k ] = length + 1
+    C[k - 1, length + 1] = 0
+    C[  k  , length + 1] = 1
+    L[k - 1] = length + 1
+    L[  k  ] = length + 1
 
     return C, L
