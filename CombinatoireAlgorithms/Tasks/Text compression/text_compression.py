@@ -32,7 +32,7 @@ def down(k:int, j:int, matrix_c, length_p) -> tuple:
 
     return matrix_c, length_p
 
-def wst(k:int, delta, probs:list) -> tuple:
+def wst(k:int, delta, probs) -> tuple:
     """
     k - колличество итераций
     delta - сумма двух последних чисел
@@ -51,7 +51,7 @@ def wst(k:int, delta, probs:list) -> tuple:
 
     return i, probs
 
-def huffman(letters_p:list, k : int = 2) -> tuple:
+def huffman(letters_p, k : int = 2) -> tuple:
     """
     letters_p  - массив вероятностей (по убыванию)
     k - количество букв анализируемого алфавита
@@ -71,9 +71,6 @@ def huffman(letters_p:list, k : int = 2) -> tuple:
 
     return matrix_c, length_p
 
-p1 = [0.4, 0.2, 0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]
-p2 = [0.3, 0.2, 0.2, 0.2, 0.1]
-
 POEM = """я_помню_чудное_мгновенье:_
 передо_мной_явилась_ты,_
 как_мимолетное_виденье,_
@@ -83,17 +80,18 @@ POEM = """я_помню_чудное_мгновенье:_
 LENGTH_POEM = len(POEM)
 
 alph = set(POEM[:])
-alph.remove('\n')
-alph = list(alph)
 len_alph = len(alph)
 
-dic_letter = {letter: POEM.count(letter)/LENGTH_POEM for letter in alph}
+dic_letters = {letter: POEM.count(letter)/LENGTH_POEM for letter in alph}
+print(dic_letters)
 
-letter_probability = list(dic_letter.values())
+letter_probability = np.array(list(dic_letters.values()))
 letter_probability.sort()
+print(letter_probability)
+
+print(sum(letter_probability))
 
 C, L = huffman(letter_probability, 2)
 
-print(f'C=\n{C}')
-print(f'L=\n{L}')
-
+print(f'C =\n{C}')
+print(f'L =\n{L}')
