@@ -1,5 +1,6 @@
 """Сжимание текста на основе алгоритма Хаффмана"""
 import numpy as np
+import pandas as pd
 
 def down(k:int, j:int, matrix_c, length_p) -> tuple:
     """
