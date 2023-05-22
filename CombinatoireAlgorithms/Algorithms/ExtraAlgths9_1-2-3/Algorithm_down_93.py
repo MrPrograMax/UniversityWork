@@ -1,12 +1,9 @@
-"""
-Функция down(k, j)
-"""
-
 def down(k:int, j:int, C, L):
     """
     k - dimension and iterations
     j - insertion pointer
     return C,L
+    Расщипляет j строку
     """
     #1
     beta   = C[j, : ]
