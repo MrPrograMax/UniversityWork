@@ -3,12 +3,13 @@ import numpy as np
 
 def down(k:int, j:int, matrix_c, length_p) -> tuple:
     """
-    k - dimension and iterations
-    j - insertion pointer
-    C - massive n*n
-    L - length set
-    return C,L
+    k - колличество итераций
+    j - указатель на вставку
+    C - матрица n*n
+    L - длина
+
     Расщипляет j строку
+    возвращает C,L
     """
     #1
     beta   = matrix_c[j, : ]
@@ -33,31 +34,31 @@ def down(k:int, j:int, matrix_c, length_p) -> tuple:
 
 def wst(k:int, delta, probs:list) -> tuple:
     """
-    k - count of iteration and dimension
-    delta - the sum of the last two numbers
-    prob - probabilities
+    k - колличество итераций
+    delta - сумма двух последних чисел
+    prob - вероятности
 
-    returns a pointer to where the insert was made
+    возвращает указатель на место вставки
     """
-
     probs[k-1] = delta
 
     for i in range(k - 1, 1, -1):
         #от к-1 до 2 в обратном порядке
-        if probs[i - 1] < probs[i]:
-            probs[i - 1], probs[i] = probs[i], probs[i - 1]
+        if probs[i-1] < probs[i]:
+            probs[i-1], probs[i] = probs[i], probs[i-1]
         else:
             break
 
     return i, probs
 
-def haffman(letters_p:list, k : int = 2) -> tuple:
+def huffman(letters_p:list, k : int = 2) -> tuple:
     """
-    P  - массив вероятностей (по убыванию)
+    letters_p  - массив вероятностей (по убыванию)
     k - количество букв анализируемого алфавита
     """
-    matrix_c = np.zeros((k, k))
-    length_p = np.zeros( k )
+    matrix_c = np.zeros((k, k)) #матрица C
+    length_p = np.zeros(k)      #массив L
+
     if k == 2:
         matrix_c[0][0] = 0
         matrix_c[1][0] = 1
@@ -84,13 +85,15 @@ LENGTH_POEM = len(POEM)
 alph = set(POEM[:])
 alph.remove('\n')
 alph = list(alph)
+len_alph = len(alph)
 
 dic_letter = {letter: POEM.count(letter)/LENGTH_POEM for letter in alph}
 
 letter_probability = list(dic_letter.values())
 letter_probability.sort()
 
-C, L = haffman(letter_probability, 2)
+C, L = huffman(letter_probability, 2)
 
 print(f'C=\n{C}')
 print(f'L=\n{L}')
+

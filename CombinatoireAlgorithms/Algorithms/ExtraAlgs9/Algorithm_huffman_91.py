@@ -3,7 +3,7 @@ import numpy as np
 from Algorithm_wst_92 import wst
 from Algorithm_down_93 import down
 
-def haffman(P:list, k : int = 2):
+def huffman(P:list, k : int = 2):
     """
     P  - массив вероятностей (по убыванию)
     k - количество букв анализируемого алфавита
