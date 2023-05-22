@@ -16,4 +16,4 @@ def wst(k:int, delta, probs:list):
         else:
             break
 
-    return i
+    return i, probs

@@ -14,14 +14,16 @@ def haffman(P:list, k : int = 2):
     P  - массив вероятностей (по убыванию)
     k - количество букв анализируемого алфавита
     """
-    c = np.array((k, k))
+    C = np.array((k, k))
     L = np.zeros( k )
     if k == 2:
-        c[0][0] = 0
-        c[1][0] = 1
+        C[0][0] = 0
+        C[1][0] = 1
         L[0] = 1
         L[1] = 1
     else:
         delta = P[k-1] + P[k]
-        j =  wst(k, delta, P)
-        down(k, j)
+        j, P =  wst(k, delta, P)
+        C, L = down(k, j, C, L)
+
+    return C, L
