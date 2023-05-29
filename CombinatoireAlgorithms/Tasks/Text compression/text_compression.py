@@ -1,7 +1,7 @@
 """Сжимание текста на основе алгоритма Хаффмана"""
 import numpy as np
 
-def down(k:int, j:int, matrix_c, length_p) -> tuple:
+def down(k:int, j:int, C, L) -> tuple:
     """
     k - колличество итераций
     j - указатель на вставку
@@ -12,66 +12,66 @@ def down(k:int, j:int, matrix_c, length_p) -> tuple:
     возвращает C,L
     """
     #1
-    beta   = matrix_c[j, : ]
-    length = int(length_p[j])
+    beta   = C[j, : ]
+    length = int(L[j])
 
     #2
     for i in range(j, k-2):
-        matrix_c[i, :] = matrix_c[i + 1, :]
-        length_p[i]  = length_p[i + 1]
+        C[i, :] = C[i + 1, :]
+        L[i]  = L[i + 1]
 
     #3
-    matrix_c[k - 2, : ] = beta
-    matrix_c[k - 1, : ] = beta
+    C[k - 2, : ] = beta
+    C[k - 1, : ] = beta
 
     #4
-    matrix_c[k - 2, length + 1] = 0
-    matrix_c[k - 1, length + 1] = 1
-    length_p[k - 2] = length + 1
-    length_p[k - 1] = length + 1
+    C[k - 2, length + 1] = 0
+    C[k - 1, length + 1] = 1
+    L[k - 2] = length + 1
+    L[k - 1] = length + 1
 
-    return matrix_c, length_p
+    return C, L
 
-def wst(k:int, delta, probs) -> tuple:
+def wst(k:int, delta, P) -> tuple:
     """
     k - колличество итераций
     delta - сумма двух последних чисел
-    prob - вероятности
+    p - вероятности
 
     возвращает указатель на место вставки
     """
-    probs[k-2] = delta
+    P[k-2] = delta
 
     for i in range(k-2, 0, -1):
         #от к-1 до 2 в обратном порядке
-        if probs[i-1] < probs[i]:
-            probs[i-1], probs[i] = probs[i], probs[i-1]
+        if P[i-1] < P[i]:
+            P[i-1], P[i] = P[i], P[i-1]
         else:
             break
-        
-    print(f'probs{probs}')
-    return i, probs
 
-def huffman(letters_p, k : int = 2) -> tuple:
+    print(f'probs{P}')
+    return i, P
+
+def huffman(P, k : int = 2) -> tuple:
     """
-    letters_p  - массив вероятностей (по убыванию)
+    P  - массив вероятностей (по убыванию)
     k - количество букв анализируемого алфавита
     """
-    matrix_c = np.zeros((k, k)) #матрица C
-    length_p = np.zeros(k)      #массив L
+    C = np.zeros((k, k)) #матрица C
+    L = np.zeros(k)      #массив L
 
     if k == 2:
-        matrix_c[0][0] = 0
-        matrix_c[1][0] = 1
-        length_p[0] = 1
-        length_p[1] = 1
+        C[0][0] = 0
+        C[1][0] = 1
+        L[0] = 1
+        L[1] = 1
     else:
-        delta = letters_p[k-2] + letters_p[k-1]
-        j, letters_p = wst(k, delta, letters_p)
-        matrix_c, length_p = down(k, j, matrix_c, length_p)
-        matrix_c, length_p = huffman(letters_p, k-1)
+        delta = P[k-2] + P[k-1]
+        j, P = wst(k, delta, P)
+        C, L = down(k, j, C, L)
+        C, L = huffman(P, k-1)
 
-    return matrix_c, length_p
+    return C, L
 
 POEM = """я_помню_чудное_мгновенье:_
 передо_мной_явилась_ты,_
