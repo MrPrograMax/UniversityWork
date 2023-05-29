@@ -40,17 +40,18 @@ def wst(k:int, delta, P) -> tuple:
 
     возвращает указатель на место вставки
     """
-    P[k-2] = delta
+    j=k-2
+    P[j] = delta
 
-    for i in range(k-2, 0, -1):
+    for j in range(j, 0, -1):
         #от к-1 до 2 в обратном порядке
-        if P[i-1] < P[i]:
-            P[i-1], P[i] = P[i], P[i-1]
+        if P[j-1] < P[j]:
+            P[j-1], P[j] = P[j], P[j-1]
         else:
             break
 
-    print(f'probs{P}')
-    return i, P
+    print(f'probs[{j}] {P}')
+    return j, P
 
 def huffman(P, k : int = 2) -> tuple:
     """
