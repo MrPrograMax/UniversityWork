@@ -16,11 +16,16 @@ def down(k:int, j:int, C, L) -> tuple:
     length = int(L[j])
 
     #2
-    for i in range(j, k-2):
+    print(C)
+    print(L)
+    for i in range(j, k-1):
+        print(f'fbefore for[{i}]: {C}')
         C[i, :] = C[i + 1, :]
         L[i]  = L[i + 1]
-
+        print(f'in for[{i}] :{C}')
+    
     #3
+    print(f'k={k}')
     C[k - 2, : ] = beta
     C[k - 1, : ] = beta
 
@@ -29,7 +34,7 @@ def down(k:int, j:int, C, L) -> tuple:
     C[k - 1, length + 1] = 1
     L[k - 2] = length + 1
     L[k - 1] = length + 1
-
+    print(f'before return {C}')
     return C, L
 
 def wst(k:int, delta, P) -> tuple:
@@ -50,7 +55,7 @@ def wst(k:int, delta, P) -> tuple:
         else:
             break
 
-    print(f'probs[{j}] {P}')
+    #print(f'probs[{j}] {P}')
     return j, P
 
 def huffman(P, k : int = 2) -> tuple:
@@ -69,8 +74,9 @@ def huffman(P, k : int = 2) -> tuple:
     else:
         delta = P[k-2] + P[k-1]
         j, P = wst(k, delta, P)
-        C, L = down(k, j, C, L)
         C, L = huffman(P, k-1)
+        C, L = down(k, j, C, L)
+        
 
     return C, L
 
@@ -85,15 +91,19 @@ LENGTH_POEM = len(POEM)
 alph = set(POEM[:])
 len_alph = len(alph)
 
-dic_letters = {letter: POEM.count(letter)/LENGTH_POEM for letter in alph}
-dic_letters = dict(sorted(dic_letters.items(), key = lambda x : x[1], reverse=True))
-print(dic_letters)
+dictionary_of_letters = {letter: POEM.count(letter)/LENGTH_POEM for letter in alph}
+dictionary_of_letters = dict(sorted(dictionary_of_letters.items(), 
+                                    key = lambda x : x[1], 
+                                    reverse=True
+                                    )
+                            )
+#print(dictionary_of_letters)
 
-letter_probability = np.array(list(dic_letters.values()))
+letter_probability = np.array(list(dictionary_of_letters.values()))
 
-print(letter_probability)
+#print(letter_probability)
 
-print(sum(letter_probability))
+#print(sum(letter_probability))
 
 C, L = huffman(letter_probability, len_alph)
 
