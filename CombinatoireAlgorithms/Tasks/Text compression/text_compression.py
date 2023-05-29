@@ -16,16 +16,16 @@ def down(k:int, j:int, C, L) -> tuple:
     length = int(L[j])
 
     #2
-    print(C)
-    print(L)
-    for i in range(j, k-1):
-        print(f'fbefore for[{i}]: {C}')
+    #print(C)
+    #print(L)
+    for i in range(j, k-2):
+        #print(f'fbefore for[{i}]: {C}')
         C[i, :] = C[i + 1, :]
         L[i]  = L[i + 1]
-        print(f'in for[{i}] :{C}')
+        #print(f'in for[{i}] :{C}')
     
     #3
-    print(f'k={k}')
+    #print(f'k={k}')
     C[k - 2, : ] = beta
     C[k - 1, : ] = beta
 
@@ -34,7 +34,7 @@ def down(k:int, j:int, C, L) -> tuple:
     C[k - 1, length + 1] = 1
     L[k - 2] = length + 1
     L[k - 1] = length + 1
-    print(f'before return {C}')
+    #print(f'before return {C}')
     return C, L
 
 def wst(k:int, delta, P) -> tuple:
@@ -58,13 +58,12 @@ def wst(k:int, delta, P) -> tuple:
     #print(f'probs[{j}] {P}')
     return j, P
 
-def huffman(P, k : int = 2) -> tuple:
+def huffman(P, k, C, L) -> tuple:
     """
     P  - массив вероятностей (по убыванию)
     k - количество букв анализируемого алфавита
     """
-    C = np.zeros((k, k)) #матрица C
-    L = np.zeros(k)      #массив L
+    
 
     if k == 2:
         C[0][0] = 0
@@ -74,7 +73,7 @@ def huffman(P, k : int = 2) -> tuple:
     else:
         delta = P[k-2] + P[k-1]
         j, P = wst(k, delta, P)
-        C, L = huffman(P, k-1)
+        C, L = huffman(P, k-1, C, L)
         C, L = down(k, j, C, L)
         
 
@@ -104,8 +103,30 @@ letter_probability = np.array(list(dictionary_of_letters.values()))
 #print(letter_probability)
 
 #print(sum(letter_probability))
+def get_str_from_list(q, L):
+    text = ""
+    for i in range(int(L)):
+        text += str(int(q[i]))
 
-C, L = huffman(letter_probability, len_alph)
+    return text
 
+C = np.zeros((len_alph, len_alph)) #матрица C
+L = np.zeros(len_alph)
+
+C, L = huffman(letter_probability, len_alph, C, L)
+      #массив L
 print(f'C =\n{C}')
 print(f'L =\n{L}')
+
+ciphed_text = ""
+for i in range(LENGTH_POEM):
+    index = list(dictionary_of_letters.keys()).index(POEM[i])
+    ciphed_text += get_str_from_list(C[index], L[index])
+
+print("csyphed:")
+print(ciphed_text)
+
+def K_average(size, L):
+    return size*(8 - np.mean(L))/(8*size) * 100
+
+print(K_average(len_alph, L))
